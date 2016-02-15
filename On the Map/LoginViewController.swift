@@ -30,24 +30,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
-
-    var facebookManager = FBSDKLoginManager()
-    var facebookToken: FBSDKAccessToken? {
-        return FBSDKAccessToken.currentAccessToken()
-    }
     
     var udacityClient = Client()
     
     func loginWithFacebook() {
-        facebookManager.logInWithReadPermissions(["public_profile"], fromViewController: self) { [unowned self] (loginResult, error) -> Void in
+        Client.facebookManager.logInWithReadPermissions(["public_profile"], fromViewController: self) { [unowned self] (loginResult, error) -> Void in
             if error == nil {
                 if !loginResult.isCancelled {
                     self.udacityClient.createUdacitySesssionFromFacebook(loginResult.token.tokenString, completionHandler: { (success, error) in
                         if success {
-                            print(loginResult.token.tokenString)
-                            print("success!")
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.disableViewsDuringLogin(false)
+                                self.performSegueWithIdentifier(Constants.LoginSegueIdentifer, sender: nil)
+                            })
                         } else {
-                            print(error)
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.disableViewsDuringLogin(false)
+                                self.errorLabel.text = error
+                            })
                         }
                     })
                 } else {
@@ -58,12 +58,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func logoutOfFacebook() {
-        facebookManager.logOut()
+        Client.facebookManager.logOut()
         updateFacebookButton()
     }
     
     func updateFacebookButton() {
-        if facebookToken == nil {
+        if Client.facebookToken == nil {
             facebookLoginButton.setTitle("Login with Facebook", forState: .Normal)
             facebookLoginButton.removeTarget(self, action: "logoutOfFacebook", forControlEvents: .TouchUpInside)
             facebookLoginButton.addTarget(self, action: "loginWithFacebook", forControlEvents: .TouchUpInside)

@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 class Client {
     
@@ -14,11 +16,15 @@ class Client {
         static let udacitySessionURL = "https://www.udacity.com/api/session"
         static let udacityUserInfoURL = "https://www.udacity.com/api/users/"
     }
-
+    
     static var udacityUserID: String?
     static var udacitySessionID: String?
     static var userFirstName: String?
     static var userLastName: String?
+    static var facebookManager = FBSDKLoginManager()
+    static var facebookToken: FBSDKAccessToken? {
+        return FBSDKAccessToken.currentAccessToken()
+    }
     
     func createUdacitySession(username username: String, password: String, completionHandler: (success: Bool, error: String?) -> Void) {
         
@@ -195,7 +201,7 @@ class Client {
         task.resume()
     }
     
-    class func logout(completionHandler: (success: Bool, error: String?) ->  Void) {
+    class func logoutOfUdacity(completionHandler: (success: Bool, error: String?) ->  Void) {
         let request = NSMutableURLRequest(URL: NSURL(string: Constants.udacitySessionURL)!)
         request.HTTPMethod = "DELETE"
         var xsrfCookie: NSHTTPCookie? = nil
@@ -235,6 +241,10 @@ class Client {
             
         }
         task.resume()
+    }
+    
+    class func logoutOfFacebook() {
+        Client.facebookManager.logOut()
     }
     
     private func getJSONForHTTPBody(dictionary: [String: AnyObject]) -> NSData? {

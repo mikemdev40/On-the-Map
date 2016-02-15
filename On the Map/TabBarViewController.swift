@@ -12,13 +12,18 @@ class TabBarViewController: UITabBarController {
 
     
     func logout() {
-        Client.logout { (success, error) in
+        Client.logoutOfUdacity { (success, error) in
             if success {
                 print("successfully logged out")
             } else {
                 print(error)
             }
         }
+        
+        if Client.facebookToken != nil {
+            Client.logoutOfFacebook()
+        }
+        
         dismissViewControllerAnimated(true, completion: nil)
     }
 
