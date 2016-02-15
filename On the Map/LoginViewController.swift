@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import FBSDKLoginKit
 import FBSDKCoreKit
+import FBSDKLoginKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
