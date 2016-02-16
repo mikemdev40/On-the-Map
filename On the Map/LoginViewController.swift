@@ -153,7 +153,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         errorLabel.text = ""
         updateFacebookButton()
     }
@@ -165,11 +164,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         spinner.hidesWhenStopped = true
 
         udacityTitleLabel.textColor = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1.0)
-        
         udacityLoginButton.backgroundColor = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1.0)
         udacityLoginButton.layer.cornerRadius = 7
         udacityLoginButton.addTarget(self, action: "loginToUdacity", forControlEvents: .TouchUpInside)
-        
         facebookLoginButton.backgroundColor = UIColor(red: 59/255, green: 89/255, blue: 152/255, alpha: 1.0)
         facebookLoginButton.layer.cornerRadius = 7
     }
