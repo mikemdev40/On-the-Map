@@ -33,29 +33,61 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var udacityClient = Client()
     
+    func loginToUdacity() {
+        if checkForCompleteTextFields() {
+            disableViewsDuringLogin(true)
+            spinner.startAnimating()
+            udacityClient.createUdacitySession(username: usernameTextField.text!, password: passwordTextField.text!) {[unowned self] (success, error) -> Void in
+                self.completeLogin(success, error: error)
+            }
+        } else {
+            errorLabel.text = "Username or password missing."
+            passwordTextField.resignFirstResponder()
+            usernameTextField.resignFirstResponder()
+        }
+    }
+    
     func loginWithFacebook() {
-        Client.facebookManager.logInWithReadPermissions(["public_profile"], fromViewController: self) { [unowned self] (loginResult, error) -> Void in
-            if error == nil {
-                if !loginResult.isCancelled {
-                    self.udacityClient.createUdacitySesssionFromFacebook(loginResult.token.tokenString, completionHandler: { (success, error) in
-                        if success {
-                            dispatch_async(dispatch_get_main_queue(), {
-                                self.disableViewsDuringLogin(false)
-                                self.performSegueWithIdentifier(Constants.LoginSegueIdentifer, sender: nil)
-                            })
-                        } else {
-                            dispatch_async(dispatch_get_main_queue(), {
-                                self.disableViewsDuringLogin(false)
-                                self.errorLabel.text = error
-                            })
+        disableViewsDuringLogin(true)
+        spinner.startAnimating()
+        
+        dispatch_async(dispatch_get_main_queue()) {  //dispatching to main queue was needed here since the facebookManager presents UI and sometimes the presented loging window would dismiss AFTER the segue occurred, and that created a problem with the navigation view controller being presented on a view that was not in the hierarchy
+            
+            Client.facebookManager.logInWithReadPermissions(["public_profile"], fromViewController: self) { [unowned self] (loginResult, error) -> Void in
+                if error == nil {
+                    if !loginResult.isCancelled {
+                        self.udacityClient.createUdacitySesssionFromFacebook(loginResult.token.tokenString) { (success, error) in
+                            print("logged in")
+                            self.completeLogin(success, error: error)
                         }
-                    })
+                    } else {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.errorLabel.text = "Login cancelled."
+                        }
+                    }
                 } else {
-                    print("did cancel")
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.errorLabel.text = error.localizedDescription
+                    }
                 }
             }
         }
     }
+    
+    func completeLogin(success: Bool, error: String?) {
+        if success {
+            dispatch_async(dispatch_get_main_queue()) {
+                self.disableViewsDuringLogin(false)
+                self.performSegueWithIdentifier(Constants.LoginSegueIdentifer, sender: nil)
+            }
+        } else {
+            dispatch_async(dispatch_get_main_queue()) {
+                self.disableViewsDuringLogin(false)
+                self.errorLabel.text = error
+            }
+        }
+    }
+    
     
     func logoutOfFacebook() {
         Client.facebookManager.logOut()
@@ -78,29 +110,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    func loginToUdacity() {
-        if checkForCompleteTextFields() {
-            disableViewsDuringLogin(true)
-            udacityClient.createUdacitySession(username: usernameTextField.text!, password: passwordTextField.text!) {[unowned self] (success, error) -> Void in
-                    if success {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.disableViewsDuringLogin(false)
-                            self.performSegueWithIdentifier(Constants.LoginSegueIdentifer, sender: nil)
-                        })
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.disableViewsDuringLogin(false)
-                            self.errorLabel.text = error
-                        })
-                    }
-                }
-            } else {
-                errorLabel.text = "Username or password missing."
-                passwordTextField.resignFirstResponder()
-                usernameTextField.resignFirstResponder()
-            }
-        }
-    
     func disableViewsDuringLogin(disabled: Bool) {
         errorLabel.text = ""
         udacityLoginButton.enabled = !disabled
@@ -110,11 +119,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         usernameTextField.enabled = !disabled
         passwordTextField.enabled = !disabled
         registerButton.enabled = !disabled
-        if spinner.isAnimating() {
-            spinner.stopAnimating()
-        } else {
-            spinner.startAnimating()
-        }
     }
     
     func checkForCompleteTextFields() -> Bool {
@@ -134,17 +138,32 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         errorLabel.text = ""
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == Constants.LoginSegueIdentifer {
+            var destinationViewController = segue.destinationViewController
+            if let navigationViewController = destinationViewController as? UINavigationController {
+                destinationViewController = navigationViewController.viewControllers[0]
+                if let tabBarController = destinationViewController as? TabBarViewController {
+                    tabBarController.spinner = spinner
+                    print("segue")
+                }
+            }
+        }
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         errorLabel.text = ""
-        spinner.hidesWhenStopped = true
         updateFacebookButton()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(Client.facebookToken)
+        spinner.hidesWhenStopped = true
+
         udacityTitleLabel.textColor = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1.0)
         
         udacityLoginButton.backgroundColor = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1.0)

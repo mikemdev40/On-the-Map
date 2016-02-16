@@ -9,9 +9,14 @@
 import UIKit
 
 class TabBarViewController: UITabBarController {
-
+    
+    var spinner: UIActivityIndicatorView?
     
     func logout() {
+        spinner?.stopAnimating()
+        if Client.facebookToken != nil {
+            Client.logoutOfFacebook()
+        }
         Client.logoutOfUdacity { (success, error) in
             if success {
                 print("successfully logged out")
@@ -19,11 +24,6 @@ class TabBarViewController: UITabBarController {
                 print(error)
             }
         }
-        
-        if Client.facebookToken != nil {
-            Client.logoutOfFacebook()
-        }
-        
         dismissViewControllerAnimated(true, completion: nil)
     }
 
