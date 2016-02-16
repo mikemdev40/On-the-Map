@@ -51,13 +51,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         disableViewsDuringLogin(true)
         spinner.startAnimating()
         
-        dispatch_async(dispatch_get_main_queue()) {  //dispatching to main queue was needed here since the facebookManager presents UI and sometimes the presented loging window would dismiss AFTER the segue occurred, and that created a problem with the navigation view controller being presented on a view that was not in the hierarchy
-            
+        //if a facebook token currently exists on the system (i.e. one was saved from a previous login from facebook in which the user quit the app without logging out), then the udacity session is created using the token without having to authenticate through facebook again and the login segue occurs; if the current facebook token is nil (e.g. first time logging in with facebook, or the user tapped the "logout" button in the previous session after having logged in with facebook), then an extra step is required in which the user goes to the facebook authentication page first before the login segue occurs
+        if Client.facebookToken == nil {
             Client.facebookManager.logInWithReadPermissions(["public_profile"], fromViewController: self) { [unowned self] (loginResult, error) -> Void in
                 if error == nil {
                     if !loginResult.isCancelled {
                         self.udacityClient.createUdacitySesssionFromFacebook(loginResult.token.tokenString) { (success, error) in
-                            print("logged in")
+                            print("token created, logged in")
                             self.completeLogin(success, error: error)
                         }
                     } else {
@@ -69,6 +69,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     dispatch_async(dispatch_get_main_queue()) {
                         self.errorLabel.text = error.localizedDescription
                     }
+                }
+            }
+        } else {
+            if let tokenString = Client.facebookToken?.tokenString {
+                self.udacityClient.createUdacitySesssionFromFacebook(tokenString) { (success, error) in
+                    print("token already active, logged in")
+                    self.completeLogin(success, error: error)
                 }
             }
         }
@@ -91,19 +98,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func logoutOfFacebook() {
         Client.facebookManager.logOut()
-        updateFacebookButton()
-    }
-    
-    func updateFacebookButton() {
-        if Client.facebookToken == nil {
-            facebookLoginButton.setTitle("Login with Facebook", forState: .Normal)
-            facebookLoginButton.removeTarget(self, action: "logoutOfFacebook", forControlEvents: .TouchUpInside)
-            facebookLoginButton.addTarget(self, action: "loginWithFacebook", forControlEvents: .TouchUpInside)
-        } else {
-            facebookLoginButton.setTitle("Logout of Facebook", forState: .Normal)
-            facebookLoginButton.removeTarget(self, action: "loginWithFacebook", forControlEvents: .TouchUpInside)
-            facebookLoginButton.addTarget(self, action: "logoutOfFacebook", forControlEvents: .TouchUpInside)
-        }
     }
     
     @IBAction func registerForUdacity(sender: UIButton) {
@@ -154,7 +148,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         errorLabel.text = ""
-        updateFacebookButton()
     }
     
     override func viewDidLoad() {
@@ -164,11 +157,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         spinner.hidesWhenStopped = true
 
         udacityTitleLabel.textColor = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1.0)
+        
         udacityLoginButton.backgroundColor = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1.0)
         udacityLoginButton.layer.cornerRadius = 7
         udacityLoginButton.addTarget(self, action: "loginToUdacity", forControlEvents: .TouchUpInside)
+        
         facebookLoginButton.backgroundColor = UIColor(red: 59/255, green: 89/255, blue: 152/255, alpha: 1.0)
         facebookLoginButton.layer.cornerRadius = 7
+        facebookLoginButton.addTarget(self, action: "loginWithFacebook", forControlEvents: .TouchUpInside)
     }
 }
 
