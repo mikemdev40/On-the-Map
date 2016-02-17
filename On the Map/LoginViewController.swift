@@ -42,13 +42,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     var facebookLoadedComplete = false {
         willSet { print("\(loginViewActive) \(newValue) \(facebookLoginToUdacityComplete)") }
-
         didSet { determineIfSegueCanHappen() }
     }
     
     var facebookLoginToUdacityComplete = false {
         willSet { print("\(loginViewActive) \(facebookLoadedComplete) \(newValue)") }
-
         didSet { determineIfSegueCanHappen() }
     }
 
