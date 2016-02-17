@@ -37,16 +37,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var facebookLoginResults: (Bool, String?)?
     var loginViewActive = false {
-        willSet { print("\(newValue) \(facebookLoadedComplete) \(facebookLoginToUdacityComplete)") }
         didSet { determineIfSegueCanHappen() }
     }
     var facebookLoadedComplete = false {
-        willSet { print("\(loginViewActive) \(newValue) \(facebookLoginToUdacityComplete)") }
         didSet { determineIfSegueCanHappen() }
     }
     
     var facebookLoginToUdacityComplete = false {
-        willSet { print("\(loginViewActive) \(facebookLoadedComplete) \(newValue)") }
         didSet { determineIfSegueCanHappen() }
     }
 
@@ -75,7 +72,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     self.facebookLoadedComplete = true
                     if !loginResult.isCancelled {
                         self.udacityClient.createUdacitySesssionFromFacebook(loginResult.token.tokenString) { (success, error) in
-                            print("token created, logged in")
                             self.facebookLoginResults = (success, error)
                             self.facebookLoginToUdacityComplete = true
                         }
@@ -93,7 +89,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         } else {
             if let tokenString = Client.facebookToken?.tokenString {
                 self.udacityClient.createUdacitySesssionFromFacebook(tokenString) { (success, error) in
-                    print("token already active, logged in")
                     self.completeLogin(success, error: error)
                 }
             }
@@ -102,10 +97,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func determineIfSegueCanHappen() {
         if loginViewActive && facebookLoadedComplete && facebookLoginToUdacityComplete {
-            print("ALMOST MADE IT")
-            print(facebookLoginResults)
             if let loginResults = facebookLoginResults {
-                print("MADE IT")
                 loginViewActive = false
                 facebookLoadedComplete = false
                 facebookLoginToUdacityComplete = false
@@ -170,7 +162,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 destinationViewController = navigationViewController.viewControllers[0]
                 if let tabBarController = destinationViewController as? TabBarViewController {
                     tabBarController.spinner = spinner
-                    print("segue")
                 }
             }
         }
@@ -192,7 +183,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(Client.facebookToken)
         spinner.hidesWhenStopped = true
 
         udacityTitleLabel.textColor = UIColor(red: 255/255, green: 165/255, blue: 0/255, alpha: 1.0)

@@ -18,11 +18,7 @@ class TabBarViewController: UITabBarController {
             Client.logoutOfFacebook()
         }
         Client.logoutOfUdacity { (success, error) in
-            if success {
-                print("successfully logged out")
-            } else {
-                print(error)
-            }
+            return
         }
         dismissViewControllerAnimated(true, completion: nil)
     }
