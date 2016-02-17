@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 import FBSDKCoreKit
 import FBSDKLoginKit
 
@@ -33,6 +34,27 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var udacityClient = Client()
     
+    var facebookLoginResults: (Bool, String?)?
+    var loginViewActive = false {
+        didSet {
+            print("view loaded")
+            determineIfSegueCanHappen()
+        }
+    }
+    var facebookLoadedComplete = false {
+        didSet {
+            print("loaded set")
+            determineIfSegueCanHappen()
+        }
+    }
+    
+    var facebookLoginToUdacityComplete = false {
+        didSet {
+            print("login set")
+            determineIfSegueCanHappen()
+        }
+    }
+
     func loginToUdacity() {
         if checkForCompleteTextFields() {
             disableViewsDuringLogin(true)
@@ -55,10 +77,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if Client.facebookToken == nil {
             Client.facebookManager.logInWithReadPermissions(["public_profile"], fromViewController: self) { [unowned self] (loginResult, error) -> Void in
                 if error == nil {
+                    self.facebookLoadedComplete = true
                     if !loginResult.isCancelled {
                         self.udacityClient.createUdacitySesssionFromFacebook(loginResult.token.tokenString) { (success, error) in
                             print("token created, logged in")
-                            self.completeLogin(success, error: error)
+                            self.facebookLoginResults = (success, error)
+                            self.facebookLoginToUdacityComplete = true
+                            print(self.facebookLoginResults)
                         }
                     } else {
                         dispatch_async(dispatch_get_main_queue()) {
@@ -81,7 +106,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func determineIfSegueCanHappen() {
+        if loginViewActive && facebookLoadedComplete && facebookLoginToUdacityComplete {
+            print("ALMST MADE IT")
+            print(facebookLoginResults)
+            if let loginResults = facebookLoginResults {
+                print("MADE IT")
+                completeLogin(loginResults.0, error: loginResults.1)
+                loginViewActive = false
+                facebookLoadedComplete = false
+                facebookLoginToUdacityComplete = false
+            }
+        }
+    }
+
     func completeLogin(success: Bool, error: String?) {
+
         if success {
             dispatch_async(dispatch_get_main_queue()) {
                 self.disableViewsDuringLogin(false)
@@ -143,6 +183,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        loginViewActive = true
     }
     
     override func viewWillAppear(animated: Bool) {
