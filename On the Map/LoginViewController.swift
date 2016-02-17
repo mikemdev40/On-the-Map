@@ -37,13 +37,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var facebookLoginResults: (Bool, String?)?
     var loginViewActive = false {
+        willSet { print("\(newValue) \(facebookLoadedComplete) \(facebookLoginToUdacityComplete)") }
         didSet { determineIfSegueCanHappen() }
     }
     var facebookLoadedComplete = false {
+        willSet { print("\(loginViewActive) \(newValue) \(facebookLoginToUdacityComplete)") }
+
         didSet { determineIfSegueCanHappen() }
     }
     
     var facebookLoginToUdacityComplete = false {
+        willSet { print("\(loginViewActive) \(facebookLoadedComplete) \(newValue)") }
+
         didSet { determineIfSegueCanHappen() }
     }
 
@@ -75,7 +80,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                             print("token created, logged in")
                             self.facebookLoginResults = (success, error)
                             self.facebookLoginToUdacityComplete = true
-                            print(self.facebookLoginResults)
                         }
                     } else {
                         dispatch_async(dispatch_get_main_queue()) {
@@ -104,10 +108,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             print(facebookLoginResults)
             if let loginResults = facebookLoginResults {
                 print("MADE IT")
-                completeLogin(loginResults.0, error: loginResults.1)
                 loginViewActive = false
                 facebookLoadedComplete = false
                 facebookLoginToUdacityComplete = false
+                completeLogin(loginResults.0, error: loginResults.1)
             }
         }
     }
@@ -176,6 +180,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidAppear(animated: Bool) {
         loginViewActive = true
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        loginViewActive = false
     }
     
     override func viewWillAppear(animated: Bool) {
