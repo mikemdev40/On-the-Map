@@ -15,6 +15,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     struct Constants {
         static let LoginSegueIdentifer = "LoginSuccessfulSegue"
+        static let udacitySignUpURL = "https://www.udacity.com/account/auth#!/signup"
     }
     
     @IBOutlet weak var usernameTextField: UITextField! {
@@ -36,23 +37,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var facebookLoginResults: (Bool, String?)?
     var loginViewActive = false {
-        didSet {
-            print("view loaded")
-            determineIfSegueCanHappen()
-        }
+        didSet { determineIfSegueCanHappen() }
     }
     var facebookLoadedComplete = false {
-        didSet {
-            print("loaded set")
-            determineIfSegueCanHappen()
-        }
+        didSet { determineIfSegueCanHappen() }
     }
     
     var facebookLoginToUdacityComplete = false {
-        didSet {
-            print("login set")
-            determineIfSegueCanHappen()
-        }
+        didSet { determineIfSegueCanHappen() }
     }
 
     func loginToUdacity() {
@@ -108,7 +100,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func determineIfSegueCanHappen() {
         if loginViewActive && facebookLoadedComplete && facebookLoginToUdacityComplete {
-            print("ALMST MADE IT")
+            print("ALMOST MADE IT")
             print(facebookLoginResults)
             if let loginResults = facebookLoginResults {
                 print("MADE IT")
@@ -121,7 +113,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
 
     func completeLogin(success: Bool, error: String?) {
-
         if success {
             dispatch_async(dispatch_get_main_queue()) {
                 self.disableViewsDuringLogin(false)
@@ -135,13 +126,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
-    func logoutOfFacebook() {
-        Client.facebookManager.logOut()
-    }
-    
     @IBAction func registerForUdacity(sender: UIButton) {
-        
+        if let signupURL = NSURL(string: Constants.udacitySignUpURL) {
+            let signUpViewContoller = SFSafariViewController(URL: signupURL)
+            presentViewController(signUpViewContoller, animated: true, completion: nil)
+        }
     }
     
     func disableViewsDuringLogin(disabled: Bool) {
