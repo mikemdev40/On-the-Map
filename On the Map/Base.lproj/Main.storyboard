@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10080"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
@@ -129,9 +130,37 @@
                     <view key="view" contentMode="scaleToFill" id="GPn-8L-lJV">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="kck-9O-TOt">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                            </mapView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="kck-9O-TOt" secondAttribute="trailing" id="Gxv-wl-tcy"/>
+                            <constraint firstItem="kck-9O-TOt" firstAttribute="top" secondItem="FBQ-mO-aea" secondAttribute="bottom" id="IjB-oW-0TC"/>
+                            <constraint firstItem="kck-9O-TOt" firstAttribute="bottom" secondItem="opV-3G-NBQ" secondAttribute="top" constant="8" symbolic="YES" id="WXw-Fq-K9O"/>
+                            <constraint firstItem="kck-9O-TOt" firstAttribute="leading" secondItem="GPn-8L-lJV" secondAttribute="leading" id="bIU-CE-bHt"/>
+                            <constraint firstItem="kck-9O-TOt" firstAttribute="top" secondItem="FBQ-mO-aea" secondAttribute="bottom" id="fSb-Ts-vSn"/>
+                            <constraint firstItem="opV-3G-NBQ" firstAttribute="top" secondItem="kck-9O-TOt" secondAttribute="bottom" id="jgH-A4-Xuo"/>
+                            <constraint firstItem="opV-3G-NBQ" firstAttribute="top" secondItem="kck-9O-TOt" secondAttribute="bottom" id="swU-f4-46j"/>
+                            <constraint firstItem="kck-9O-TOt" firstAttribute="leading" secondItem="GPn-8L-lJV" secondAttribute="leadingMargin" id="uR4-k7-47f"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="kck-9O-TOt" secondAttribute="trailing" constant="-20" id="uts-Mx-Ykt"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="WXw-Fq-K9O"/>
+                                <exclude reference="fSb-Ts-vSn"/>
+                                <exclude reference="uR4-k7-47f"/>
+                                <exclude reference="uts-Mx-Ykt"/>
+                                <exclude reference="jgH-A4-Xuo"/>
+                            </mask>
+                        </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="wRB-5f-wp3"/>
+                    <connections>
+                        <outlet property="mapView" destination="kck-9O-TOt" id="KuL-bk-IOS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WfM-Ya-m8f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

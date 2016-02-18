@@ -7,9 +7,27 @@
 //
 
 import UIKit
+import MapKit
 
-class LocationsOnMapViewController: UIViewController {
+class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
 
+    @IBOutlet weak var mapView: MKMapView! {
+        didSet {
+            mapView.delegate = self
+            mapView.mapType = .Standard
+        }
+    }
+    
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        return MKAnnotationView()
+    }
+    
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
