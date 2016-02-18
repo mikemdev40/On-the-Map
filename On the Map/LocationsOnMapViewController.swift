@@ -30,7 +30,7 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         
     }
 
