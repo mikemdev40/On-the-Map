@@ -26,7 +26,7 @@ class Client {
         return FBSDKAccessToken.currentAccessToken()
     }
     
-    func createUdacitySession(username username: String, password: String, completionHandler: (success: Bool, error: String?) -> Void) {
+    class func createUdacitySession(username username: String, password: String, completionHandler: (success: Bool, error: String?) -> Void) {
         
         let request = NSMutableURLRequest(URL: NSURL(string: Constants.udacitySessionURL)!)
         request.HTTPMethod = "POST"
@@ -35,11 +35,11 @@ class Client {
         
         let json = ["udacity": ["username": username, "password": password]]
         
-        request.HTTPBody = getJSONForHTTPBody(json)
+        request.HTTPBody = Client.getJSONForHTTPBody(json)
         //note: i decided to write a more generic method that creates a JSON HTTP body from a dictionary, rather than using a string that has the hard-coded structure; doing this was equivalent to: request.HTTPBody = "{\"udacity\": {\"username\": \"EMAIL", \"password\": \"PASSWORD\"}}".dataUsingEncoding(NSUTF8StringEncoding)
 
         let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { [unowned self] data, response, error in
+        let task = session.dataTaskWithRequest(request) { data, response, error in
             
             if error != nil {
                 
@@ -87,7 +87,7 @@ class Client {
         task.resume()
     }
     
-    func createUdacitySesssionFromFacebook(facebookAccessTokenString: String, completionHandler: (success: Bool, error: String?) -> Void) {
+    class func createUdacitySesssionFromFacebook(facebookAccessTokenString: String, completionHandler: (success: Bool, error: String?) -> Void) {
         
         let request = NSMutableURLRequest(URL: NSURL(string: Constants.udacitySessionURL)!)
         request.HTTPMethod = "POST"
@@ -100,7 +100,7 @@ class Client {
         //note: i decided to write a more generic method that creates a JSON HTTP body from a dictionary, rather than using a string that has the hard-coded structure; doing this was equivalent to: request.HTTPBody = "{\"udacity\": {\"username\": \"EMAIL", \"password\": \"PASSWORD\"}}".dataUsingEncoding(NSUTF8StringEncoding)
         
         let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request) { [unowned self] data, response, error in
+        let task = session.dataTaskWithRequest(request) { data, response, error in
             
             if error != nil {
                 
@@ -148,7 +148,7 @@ class Client {
         task.resume()
     }
     
-    func getUdacityUserInfo(completionHandler: (success: Bool, error: String?) ->  Void) {
+    class func getUdacityUserInfo(completionHandler: (success: Bool, error: String?) ->  Void) {
     
         let url = Constants.udacityUserInfoURL + Client.udacityUserID!
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
@@ -227,7 +227,9 @@ class Client {
         Client.facebookManager.logOut()
     }
     
-    private func getJSONForHTTPBody(dictionary: [String: AnyObject]) -> NSData? {
+    //getUserPosts
+    
+    class func getJSONForHTTPBody(dictionary: [String: AnyObject]) -> NSData? {
         let JSONForHTTPBody: NSData?
         do {
             JSONForHTTPBody = try NSJSONSerialization.dataWithJSONObject(dictionary, options: .PrettyPrinted)

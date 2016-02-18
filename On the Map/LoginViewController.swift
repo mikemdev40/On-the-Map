@@ -33,8 +33,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
-    var udacityClient = Client()
-    
     var facebookLoginResults: (Bool, String?)?
     var loginViewActive = false {
         didSet { determineIfSegueCanHappen() }
@@ -51,7 +49,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         if checkForCompleteTextFields() {
             disableViewsDuringLogin(true)
             spinner.startAnimating()
-            udacityClient.createUdacitySession(username: usernameTextField.text!, password: passwordTextField.text!) {[unowned self] (success, error) -> Void in
+            Client.createUdacitySession(username: usernameTextField.text!, password: passwordTextField.text!) {[unowned self] (success, error) -> Void in
                 self.completeLogin(success, error: error)
             }
         } else {
@@ -71,7 +69,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 if error == nil {
                     self.facebookLoadedComplete = true
                     if !loginResult.isCancelled {
-                        self.udacityClient.createUdacitySesssionFromFacebook(loginResult.token.tokenString) { (success, error) in
+                        Client.createUdacitySesssionFromFacebook(loginResult.token.tokenString) { (success, error) in
                             self.facebookLoginResults = (success, error)
                             self.facebookLoginToUdacityComplete = true
                         }
@@ -88,7 +86,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
         } else {
             if let tokenString = Client.facebookToken?.tokenString {
-                self.udacityClient.createUdacitySesssionFromFacebook(tokenString) { (success, error) in
+                    Client.createUdacitySesssionFromFacebook(tokenString) { (success, error) in
                     self.completeLogin(success, error: error)
                 }
             }
