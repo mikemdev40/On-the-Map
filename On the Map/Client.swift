@@ -215,30 +215,10 @@ class Client {
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
             if error != nil {
-                print(error?.localizedDescription)
-                return
+                completionHandler(success: false, error: "There was an error logging out.")
             } else {
-                guard let data = data else {
-                    completionHandler(success: false, error: "There was an error getting the data.")
-                    return
-                }
-                let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
-                let JSONData: AnyObject?
-                do {
-                    JSONData = try NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments)
-                } catch {
-                    completionHandler(success: false, error: "There was an error converting the data.")
-                    return
-                }
-                
-                guard let parsedData = JSONData as? NSDictionary else {
-                    completionHandler(success: false, error: "There was an error converting the data.")
-                    return
-                }
-
                 completionHandler(success: true, error: nil)
             }
-            
         }
         task.resume()
     }
@@ -248,18 +228,12 @@ class Client {
     }
     
     private func getJSONForHTTPBody(dictionary: [String: AnyObject]) -> NSData? {
-        let json: NSData?
+        let JSONForHTTPBody: NSData?
         do {
-            json = try NSJSONSerialization.dataWithJSONObject(dictionary, options: .PrettyPrinted)
-        } catch let error as NSError {
-            json = nil
-            print(error.localizedDescription)
+            JSONForHTTPBody = try NSJSONSerialization.dataWithJSONObject(dictionary, options: .PrettyPrinted)
+        } catch {
+            JSONForHTTPBody = nil
         }
-        
-        if let JSONForHTTPBody = json {
-            return JSONForHTTPBody
-        } else {
-            return nil
-        }
+        return JSONForHTTPBody
     }
 }

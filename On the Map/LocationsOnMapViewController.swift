@@ -20,13 +20,14 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
+        
+        
         return MKAnnotationView()
     }
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
