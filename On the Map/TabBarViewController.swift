@@ -29,9 +29,13 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "On the Map"
+        title = "On The Map"
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .Plain, target: self, action: "logout")
         
+        viewControllers?[0].tabBarItem.image = UIImage(named: "map")
+        viewControllers?[0].title = "Map"
+        viewControllers?[1].tabBarItem.image = UIImage(named: "list")
+        viewControllers?[1].title = "List"
     }
 
 }

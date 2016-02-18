@@ -12,8 +12,8 @@ class LocationsOnMapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        title = "On the Map"
+        
+        
     }
 
 }
