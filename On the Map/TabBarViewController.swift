@@ -14,13 +14,16 @@ class TabBarViewController: UITabBarController {
     
     func logout() {
         spinner?.stopAnimating()
+        
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+
         if Client.facebookToken != nil {
             Client.logoutOfFacebook()
         }
         Client.logoutOfUdacity { (success, error) in
-            return
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            self.dismissViewControllerAnimated(true, completion: nil)
         }
-        dismissViewControllerAnimated(true, completion: nil)
     }
 
     override func viewDidLoad() {
