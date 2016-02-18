@@ -11,10 +11,12 @@ import UIKit
 class TabBarViewController: UITabBarController {
     
     var spinner: UIActivityIndicatorView?
+    var logoutButton: UIBarButtonItem!
     
     func logout() {
         spinner?.stopAnimating()
         
+        logoutButton.enabled = false
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
 
         if Client.facebookToken != nil {
@@ -30,7 +32,8 @@ class TabBarViewController: UITabBarController {
         super.viewDidLoad()
 
         title = "On The Map"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .Plain, target: self, action: "logout")
+        logoutButton = UIBarButtonItem(title: "Logout", style: .Plain, target: self, action: "logout")
+        navigationItem.leftBarButtonItem = logoutButton
         
         viewControllers?[0].tabBarItem.image = UIImage(named: "map")
         viewControllers?[0].title = "Map"
