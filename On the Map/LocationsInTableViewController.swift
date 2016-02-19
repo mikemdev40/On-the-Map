@@ -16,6 +16,7 @@ class LocationsInTableViewController: UIViewController {
     
     func refresh() {
         print("reresh TABLE")
+        print(StudentPosts.sharedInstance.posts[0])
     }
     
     override func viewDidLoad() {

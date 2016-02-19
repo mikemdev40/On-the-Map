@@ -24,12 +24,24 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     
     func refresh() {
         print("reresh MAP")
+        
+        Client.retrievePosts { (success, error, results) in
+            if error != nil {
+                self.displayLoginErrorAlert("Error", message: error!, handler: nil)
+            } else if let results = results {
+                StudentPosts.generatePostsFromData(results)
+            }
+        }
+    }
+    
+    func displayLoginErrorAlert(title: String, message: String, handler: ((UIAlertAction) -> Void)?) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: handler))
+        presentViewController(ac, animated: true, completion: nil)
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        
-        
-        
+
         return MKAnnotationView()
     }
     
@@ -40,11 +52,7 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Client.retreivePosts { (success, error) in
-            print(success)
-            print(error)
-        }
-        
+        refresh()
     }
 
 }

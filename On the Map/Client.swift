@@ -57,26 +57,22 @@ class Client {
                     return
                 }
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
-                
-                
                 guard let parsedData = parseData(newData) else {
                     completionHandler(success: false, error: "There was an error converting the data.")
                     return
                 }
-                
                 guard let udacityAccount = parsedData["account"] as? NSDictionary, udacitySession = parsedData["session"] as? NSDictionary else {
                     let error = parsedData["error"] as? String
                     completionHandler(success: false, error: error)
                     return
                 }
-                
                 guard let key = udacityAccount["key"] as? String, sessionID = udacitySession["id"] as? String else {
                     completionHandler(success: false, error: "There was an error.")
                     return
                 }
+                
                 Client.udacityUserID = key
                 Client.udacitySessionID = sessionID
-
                 self.getUdacityUserInfo(completionHandler)
             }
         }
@@ -111,25 +107,22 @@ class Client {
                     return
                 }
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
-                
                 guard let parsedData = parseData(newData) else {
                     completionHandler(success: false, error: "There was an error converting the data.")
                     return
                 }
-                
                 guard let udacityAccount = parsedData["account"] as? NSDictionary, udacitySession = parsedData["session"] as? NSDictionary else {
                     let error = parsedData["error"] as? String
                     completionHandler(success: false, error: error)
                     return
                 }
-                
                 guard let key = udacityAccount["key"] as? String, sessionID = udacitySession["id"] as? String else {
                     completionHandler(success: false, error: "There was an error.")
                     return
                 }
+                
                 Client.udacityUserID = key
                 Client.udacitySessionID = sessionID
-                
                 self.getUdacityUserInfo(completionHandler)
             }
         }
@@ -158,30 +151,26 @@ class Client {
                     return
                 }
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
-                
                 guard let parsedData = parseData(newData) else {
                     completionHandler(success: false, error: "There was an error converting the data.")
                     return
                 }
-                
                 guard let udacityUser = parsedData["user"] as? NSDictionary else {
                     completionHandler(success: false, error: "No user data found.")
                     return
                 }
-                
                 let firstName = udacityUser["first_name"] as? String
                 let lastName = udacityUser["last_name"] as? String
                 
                 Client.userFirstName = firstName
                 Client.userLastName = lastName
-                
                 completionHandler(success: true, error: nil)
             }
         }
         task.resume()
     }
     
-    class func retreivePosts(completionHandler: (success: Bool, error: String?) ->  Void) {
+    class func retrievePosts(completionHandler: (success: Bool, error: String?, results: [NSDictionary]?) ->  Void) {
         let request = NSMutableURLRequest(URL: NSURL(string: Constants.parseStudentLocationsURL)!)
         request.addValue(Constants.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.RESTAPIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
@@ -191,27 +180,22 @@ class Client {
                 //TODO: change localized descripte to parse out error string
                 
                 //completionHandler(success: false, error: error?.localizedDescription)
-                completionHandler(success: false, error: "There was an error.")
+                completionHandler(success: false, error: "There was an error.", results: nil)
+                
             } else {
                 guard let data = data else {
-                    completionHandler(success: false, error: "There was an error getting the data.")
+                    completionHandler(success: false, error: "There was an error getting the data.", results: nil)
                     return
                 }
-                
                 guard let parsedData = parseData(data) else {
-                    completionHandler(success: false, error: "There was an error converting the data.")
+                    completionHandler(success: false, error: "There was an error converting the data.", results: nil)
                     return
                 }
-                
-                print(parsedData)
                 guard let studentPosts = parsedData["results"] as? [NSDictionary] else {
-                    completionHandler(success: false, error: "No posts found.")
+                    completionHandler(success: false, error: "No posts found.", results: nil)
                     return
                 }
-                
-                print(studentPosts)
-                
-                completionHandler(success: true, error: nil)
+                completionHandler(success: true, error: nil, results: studentPosts)
             }
         }
         task.resume()
