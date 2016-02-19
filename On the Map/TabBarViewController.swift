@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TabBarViewController: UITabBarController {
+class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
     
     var spinner: UIActivityIndicatorView?
     var logoutButton: UIBarButtonItem!
@@ -29,26 +29,23 @@ class TabBarViewController: UITabBarController {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-
-    func post() {
-        print("post")
-        print(selectedViewController?.title)
-    }
     
-    func refresh() {
-        print("reresh")
-        print(selectedViewController?.title)
+    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+        refreshButton.target = selectedViewController
+        postButton.target = selectedViewController
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        delegate = self
+        
         title = "On The Map"
         logoutButton = UIBarButtonItem(title: "Logout", style: .Plain, target: self, action: "logout")
         navigationItem.leftBarButtonItem = logoutButton
         
-        refreshButton = UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: "refresh")
-        postButton = UIBarButtonItem(image: UIImage(named: "pin"), style: .Plain, target: self, action: "post")
+        refreshButton = UIBarButtonItem(barButtonSystemItem: .Refresh, target: viewControllers?[0], action: "refresh")
+        postButton = UIBarButtonItem(image: UIImage(named: "pin"), style: .Plain, target: viewControllers?[0], action: "post")
         navigationItem.rightBarButtonItems = [refreshButton, postButton]
         
         viewControllers?[0].tabBarItem.image = UIImage(named: "map")

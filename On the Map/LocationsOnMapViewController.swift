@@ -18,6 +18,14 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+    func post() {
+        print("post MAP")
+    }
+    
+    func refresh() {
+        print("reresh MAP")
+    }
+    
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
         

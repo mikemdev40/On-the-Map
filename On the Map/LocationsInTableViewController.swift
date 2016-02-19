@@ -10,6 +10,14 @@ import UIKit
 
 class LocationsInTableViewController: UIViewController {
 
+    func post() {
+        print("post TABLE")
+    }
+    
+    func refresh() {
+        print("reresh TABLE")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
