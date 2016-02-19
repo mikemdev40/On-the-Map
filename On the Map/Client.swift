@@ -45,11 +45,7 @@ class Client {
         let task = session.dataTaskWithRequest(request) { data, response, error in
             
             if error != nil {
-                
-                //TODO: change localized descripte to parse out error string
-                
-                //completionHandler(success: false, error: error?.localizedDescription)
-                completionHandler(success: false, error: "There was an error.")
+                completionHandler(success: false, error: error?.localizedDescription)
                 
             } else {
                 guard let data = data else {
@@ -95,11 +91,7 @@ class Client {
         let task = session.dataTaskWithRequest(request) { data, response, error in
             
             if error != nil {
-                
-                //TODO: change localized descripte to parse out error string
-                
-                //completionHandler(success: false, error: error?.localizedDescription)
-                completionHandler(success: false, error: "There was an error.")
+                completionHandler(success: false, error: error?.localizedDescription)
                 
             } else {
                 guard let data = data else {
@@ -139,11 +131,7 @@ class Client {
         let task = session.dataTaskWithRequest(request) {data, response, error in
             
             if error != nil {
-                
-                //TODO: change localized descripte to parse out error string
-                
-                //completionHandler(success: false, error: error?.localizedDescription)
-                completionHandler(success: false, error: "There was an error.")
+                completionHandler(success: false, error: error?.localizedDescription)
                 
             } else {
                 guard let data = data else {
@@ -170,18 +158,15 @@ class Client {
         task.resume()
     }
     
-    class func retrievePosts(completionHandler: (success: Bool, error: String?, results: [NSDictionary]?) ->  Void) {
+    class func retrieveStudentInformation(completionHandler: (success: Bool, error: String?, results: [NSDictionary]?) ->  Void) {
         let request = NSMutableURLRequest(URL: NSURL(string: Constants.parseStudentLocationsURL)!)
         request.addValue(Constants.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.RESTAPIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
             if error != nil {
-                //TODO: change localized descripte to parse out error string
-                
-                //completionHandler(success: false, error: error?.localizedDescription)
-                completionHandler(success: false, error: "There was an error.", results: nil)
-                
+                completionHandler(success: false, error: error?.localizedDescription, results: nil)
+        
             } else {
                 guard let data = data else {
                     completionHandler(success: false, error: "There was an error getting the data.", results: nil)
@@ -215,7 +200,7 @@ class Client {
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
             if error != nil {
-                completionHandler(success: false, error: "There was an error logging out.")
+                completionHandler(success: false, error: error?.localizedDescription)
             } else {
                 completionHandler(success: true, error: nil)
             }

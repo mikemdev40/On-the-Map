@@ -25,7 +25,9 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     func refresh() {
         print("reresh MAP")
         
-        Client.retrievePosts { (success, error, results) in
+        StudentPosts.clearPosts()
+        
+        Client.retrieveStudentInformation { (success, error, results) in
             if error != nil {
                 self.displayLoginErrorAlert("Error", message: error!, handler: nil)
             } else if let results = results {
