@@ -22,7 +22,6 @@ class StudentPosts {
                 StudentPosts.sharedInstance.posts.append(StudentInformation(dictionary: post))
             }
         }
-        print(StudentPosts.sharedInstance.posts.count)
     }
     
     private init() { }

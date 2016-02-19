@@ -32,7 +32,34 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
                 self.displayLoginErrorAlert("Error", message: error!, handler: nil)
             } else if let results = results {
                 StudentPosts.generatePostsFromData(results)
+                self.createAndAddAnnotations()
             }
+        }
+    }
+    
+    func createAndAddAnnotations() {
+        if !StudentPosts.sharedInstance.posts.isEmpty {
+            print("not empty")
+            var annotationsToAdd = [MKPointAnnotation]()
+            
+            for studentInfo in StudentPosts.sharedInstance.posts {
+                
+                let latitude = CLLocationDegrees(Double(studentInfo.latitude))
+                let longitude = CLLocationDegrees(Double(studentInfo.longitude))
+                let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                
+                // Here we create the annotation and set its coordiate, title, and subtitle properties
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinate
+                annotation.title = "\(studentInfo.firstName) \(studentInfo.lastName)"
+                annotation.subtitle = studentInfo.mediaURL
+                
+                // Finally we place the annotation in an array of annotations.
+                annotationsToAdd.append(annotation)
+            }
+            
+            // When the array is complete, we add the annotations to the map.
+            mapView.addAnnotations(annotationsToAdd)
         }
     }
     
@@ -43,8 +70,18 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-
-        return MKAnnotationView()
+        var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("location") as? MKPinAnnotationView
+        
+        if annotationView == nil {
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "location")
+            annotationView?.canShowCallout = true
+            annotationView?.pinTintColor = MKPinAnnotationView.redPinColor()
+            annotationView?.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
+        } else {
+            annotationView?.annotation = annotation
+        }
+        
+        return annotationView
     }
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
