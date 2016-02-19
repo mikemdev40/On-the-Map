@@ -10,4 +10,15 @@ import Foundation
 
 struct StudentInformation {
     
+    var objectID: String
+    var uniqueKey: String
+    var firstName: String
+    var lastName: String
+    var mapString: String
+    var mediaURL: String
+    var latitude: Float
+    var longitude: Float
+    var createdAt: NSDate
+    var updatedAt: NSDate
+    
 }

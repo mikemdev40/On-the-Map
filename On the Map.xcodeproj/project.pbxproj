@@ -19,6 +19,7 @@
 		7A8E96EE1C6FC1630072B8AC /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8E96ED1C6FC1630072B8AC /* Client.swift */; };
 		7ABB8C581C74074B0063E500 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABB8C561C74074B0063E500 /* FBSDKCoreKit.framework */; };
 		7ABB8C591C74074B0063E500 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABB8C571C74074B0063E500 /* FBSDKLoginKit.framework */; };
+		7ABB8C5B1C776FA80063E500 /* StudentPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB8C5A1C776FA80063E500 /* StudentPosts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		7A8E96ED1C6FC1630072B8AC /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		7ABB8C561C74074B0063E500 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		7ABB8C571C74074B0063E500 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		7ABB8C5A1C776FA80063E500 /* StudentPosts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentPosts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				7A8E96ED1C6FC1630072B8AC /* Client.swift */,
+				7ABB8C5A1C776FA80063E500 /* StudentPosts.swift */,
 				7A8E96EB1C6D81890072B8AC /* StudentInformation.swift */,
 			);
 			name = Model;
@@ -196,6 +199,7 @@
 				7A8E96E31C6D68770072B8AC /* LocationsOnMapViewController.swift in Sources */,
 				7A8E96E51C6D68930072B8AC /* LocationsInTableViewController.swift in Sources */,
 				7A8E96D31C6C1A9B0072B8AC /* LoginViewController.swift in Sources */,
+				7ABB8C5B1C776FA80063E500 /* StudentPosts.swift in Sources */,
 				7A8E96EA1C6D6B5E0072B8AC /* TabBarViewController.swift in Sources */,
 				7A8E96D11C6C1A9B0072B8AC /* AppDelegate.swift in Sources */,
 			);

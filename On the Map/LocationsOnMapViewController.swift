@@ -40,7 +40,10 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        Client.retreivePosts { (success, error) in
+            print(success)
+            print(error)
+        }
         
     }
 

@@ -15,6 +15,9 @@ class Client {
     struct Constants {
         static let udacitySessionURL = "https://www.udacity.com/api/session"
         static let udacityUserInfoURL = "https://www.udacity.com/api/users/"
+        static let parseStudentLocationsURL = "https://api.parse.com/1/classes/StudentLocation"
+        static let parseApplicationID = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
+        static let RESTAPIKey = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
     }
     
     static var udacityUserID: String?
@@ -55,15 +58,8 @@ class Client {
                 }
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
                 
-                let JSONData: AnyObject?
-                do {
-                    JSONData = try NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments)
-                } catch {
-                    completionHandler(success: false, error: "There was an error converting the data.")
-                    return
-                }
                 
-                guard let parsedData = JSONData as? NSDictionary else {
+                guard let parsedData = parseData(newData) else {
                     completionHandler(success: false, error: "There was an error converting the data.")
                     return
                 }
@@ -116,15 +112,7 @@ class Client {
                 }
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
                 
-                let JSONData: AnyObject?
-                do {
-                    JSONData = try NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments)
-                } catch {
-                    completionHandler(success: false, error: "There was an error converting the data.")
-                    return
-                }
-                
-                guard let parsedData = JSONData as? NSDictionary else {
+                guard let parsedData = parseData(newData) else {
                     completionHandler(success: false, error: "There was an error converting the data.")
                     return
                 }
@@ -171,15 +159,7 @@ class Client {
                 }
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
                 
-                let JSONData: AnyObject?
-                do {
-                    JSONData = try NSJSONSerialization.JSONObjectWithData(newData, options: .AllowFragments)
-                } catch {
-                    completionHandler(success: false, error: "There was an error converting the data.")
-                    return
-                }
-                
-                guard let parsedData = JSONData as? NSDictionary else {
+                guard let parsedData = parseData(newData) else {
                     completionHandler(success: false, error: "There was an error converting the data.")
                     return
                 }
@@ -201,8 +181,40 @@ class Client {
         task.resume()
     }
     
-    class func retreivePosts() {
-        
+    class func retreivePosts(completionHandler: (success: Bool, error: String?) ->  Void) {
+        let request = NSMutableURLRequest(URL: NSURL(string: Constants.parseStudentLocationsURL)!)
+        request.addValue(Constants.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(Constants.RESTAPIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            if error != nil {
+                //TODO: change localized descripte to parse out error string
+                
+                //completionHandler(success: false, error: error?.localizedDescription)
+                completionHandler(success: false, error: "There was an error.")
+            } else {
+                guard let data = data else {
+                    completionHandler(success: false, error: "There was an error getting the data.")
+                    return
+                }
+                
+                guard let parsedData = parseData(data) else {
+                    completionHandler(success: false, error: "There was an error converting the data.")
+                    return
+                }
+                
+                print(parsedData)
+                guard let studentPosts = parsedData["results"] as? [NSDictionary] else {
+                    completionHandler(success: false, error: "No posts found.")
+                    return
+                }
+                
+                print(studentPosts)
+                
+                completionHandler(success: true, error: nil)
+            }
+        }
+        task.resume()
     }
     
     class func logoutOfUdacity(completionHandler: (success: Bool, error: String?) ->  Void) {
@@ -231,7 +243,18 @@ class Client {
         Client.facebookManager.logOut()
     }
     
-    //getUserPosts
+    class func parseData(dataToParse: NSData) -> NSDictionary? {
+        let JSONData: AnyObject?
+        do {
+            JSONData = try NSJSONSerialization.JSONObjectWithData(dataToParse, options: .AllowFragments)
+        } catch {
+            return nil
+        }
+        guard let parsedData = JSONData as? NSDictionary else {
+            return nil
+        }
+        return parsedData
+    }
     
     class func getJSONForHTTPBody(dictionary: [String: AnyObject]) -> NSData? {
         let JSONForHTTPBody: NSData?
