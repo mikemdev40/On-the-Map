@@ -16,6 +16,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     struct Constants {
         static let LoginSegueIdentifer = "LoginSuccessfulSegue"
         static let udacitySignUpURL = "https://www.udacity.com/account/auth#!/signup"
+        static let loginErrorMissingInfoTitle = "Missing Info"
+        static let loginErrorMissingInfoMessgae = "Username or password missing."
+        static let loginWasCancelledTitle = "Login Not Successful"
+        static let loginWasCancelledMessage = "Facebook login cancelled."
+        static let generalLoginErrorTitle = "Login Error"
     }
     
     @IBOutlet weak var usernameTextField: UITextField! {
@@ -30,7 +35,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var udacityLoginButton: UIButton!
     @IBOutlet weak var facebookLoginButton: UIButton!
     @IBOutlet weak var registerButton: UIButton!
-    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     var facebookLoginResults: (Bool, String?)?
@@ -50,10 +54,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             disableViewsDuringLogin(true)
             spinner.startAnimating()
             Client.createUdacitySession(username: usernameTextField.text!, password: passwordTextField.text!) {[unowned self] (success, error) -> Void in
-                self.completeLogin(success, error: error)
+                self.completeLogin(success, errorMessage: error, errorTitle: Constants.generalLoginErrorTitle)
             }
         } else {
-            errorLabel.text = "Username or password missing."
+            displayLoginErrorAlert(Constants.loginErrorMissingInfoTitle, message: Constants.loginErrorMissingInfoMessgae, handler: nil)
             passwordTextField.resignFirstResponder()
             usernameTextField.resignFirstResponder()
         }
@@ -74,20 +78,18 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                             self.facebookLoginToUdacityComplete = true
                         }
                     } else {
-                        dispatch_async(dispatch_get_main_queue()) {
-                            self.errorLabel.text = "Login cancelled."
-                        }
+                        self.completeLogin(false, errorMessage: Constants.loginWasCancelledMessage, errorTitle: Constants.loginWasCancelledTitle)
                     }
                 } else {
                     dispatch_async(dispatch_get_main_queue()) {
-                        self.errorLabel.text = error.localizedDescription
+                        self.completeLogin(false, errorMessage: error.localizedDescription, errorTitle: Constants.generalLoginErrorTitle)
                     }
                 }
             }
         } else {
             if let tokenString = Client.facebookToken?.tokenString {
                     Client.createUdacitySesssionFromFacebook(tokenString) { (success, error) in
-                    self.completeLogin(success, error: error)
+                    self.completeLogin(success, errorMessage: error, errorTitle: Constants.generalLoginErrorTitle)
                 }
             }
         }
@@ -99,12 +101,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 loginViewActive = false
                 facebookLoadedComplete = false
                 facebookLoginToUdacityComplete = false
-                completeLogin(loginResults.0, error: loginResults.1)
+                completeLogin(loginResults.0, errorMessage: loginResults.1, errorTitle: Constants.generalLoginErrorTitle)
             }
         }
     }
 
-    func completeLogin(success: Bool, error: String?) {
+    func completeLogin(success: Bool, errorMessage: String?, errorTitle: String?) {
         if success {
             dispatch_async(dispatch_get_main_queue()) {
                 self.disableViewsDuringLogin(false)
@@ -113,7 +115,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         } else {
             dispatch_async(dispatch_get_main_queue()) {
                 self.disableViewsDuringLogin(false)
-                self.errorLabel.text = error
+                self.spinner.stopAnimating()
+                if let errorMessage = errorMessage, let errorTitle = errorTitle {
+                    self.displayLoginErrorAlert(errorTitle, message: errorMessage, handler: nil)
+                }
             }
         }
     }
@@ -125,8 +130,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func displayLoginErrorAlert(title: String, message: String, handler: ((UIAlertAction) -> Void)?) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: handler))
+        presentViewController(ac, animated: true, completion: nil)
+    }
+    
     func disableViewsDuringLogin(disabled: Bool) {
-        errorLabel.text = ""
         udacityLoginButton.enabled = !disabled
         udacityLoginButton.alpha = !disabled ? 1.0 : 0.25
         facebookLoginButton.enabled = !disabled
@@ -150,7 +160,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        errorLabel.text = ""
+
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -175,7 +185,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        errorLabel.text = ""
+
     }
     
     override func viewDidLoad() {

@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="equalSpacing" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="WA3-wo-J73">
-                                <rect key="frame" x="185" y="138" width="231" height="324"/>
+                                <rect key="frame" x="185" y="138" width="231" height="343"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Login to Udacity" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="24" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vc9-gC-dx0">
                                         <rect key="frame" x="0.0" y="0.0" width="231" height="55"/>
@@ -48,17 +48,22 @@
                                             <action selector="registerForUdacity:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Rw5-oY-OGk"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Error label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7to-Zz-N1w">
-                                        <rect key="frame" x="0.0" y="254" width="231" height="21"/>
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="piO-gh-LEI">
+                                        <rect key="frame" x="86" y="254" width="60" height="40"/>
+                                        <subviews>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="oHe-6Q-yny">
+                                                <rect key="frame" x="20" y="10" width="20" height="20"/>
+                                            </activityIndicatorView>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="U4r-gA-gN3"/>
+                                            <constraint firstAttribute="height" constant="40" id="MV1-xP-zVn"/>
+                                            <constraint firstItem="oHe-6Q-yny" firstAttribute="centerY" secondItem="piO-gh-LEI" secondAttribute="centerY" id="c5c-0u-ohb"/>
+                                            <constraint firstItem="oHe-6Q-yny" firstAttribute="centerX" secondItem="piO-gh-LEI" secondAttribute="centerX" id="lsm-75-oFR"/>
+                                            <constraint firstAttribute="width" constant="60" id="vsT-um-HKQ"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="569-o0-Dzi">
-                                        <rect key="frame" x="0.0" y="290" width="231" height="34"/>
+                                        <rect key="frame" x="0.0" y="309" width="231" height="34"/>
                                         <state key="normal" title="Login with Facebook"/>
                                     </button>
                                 </subviews>
@@ -66,25 +71,18 @@
                                     <constraint firstItem="569-o0-Dzi" firstAttribute="width" secondItem="WA3-wo-J73" secondAttribute="width" id="2YN-Ab-pff"/>
                                     <constraint firstItem="9dh-r5-3pe" firstAttribute="width" secondItem="WA3-wo-J73" secondAttribute="width" id="FTK-Zg-y9z"/>
                                     <constraint firstItem="w1G-j8-D5v" firstAttribute="width" secondItem="WA3-wo-J73" secondAttribute="width" id="GwZ-v3-JYc"/>
-                                    <constraint firstItem="7to-Zz-N1w" firstAttribute="width" secondItem="WA3-wo-J73" secondAttribute="width" id="Mc2-7A-LUP"/>
                                     <constraint firstItem="DHd-1X-mQw" firstAttribute="width" secondItem="WA3-wo-J73" secondAttribute="width" id="NfF-hI-xzL"/>
                                     <constraint firstItem="A06-P5-JaA" firstAttribute="width" secondItem="WA3-wo-J73" secondAttribute="width" id="Onq-kJ-Ee2"/>
                                 </constraints>
                             </stackView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="oHe-6Q-yny">
-                                <rect key="frame" x="290" y="394" width="20" height="20"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="oHe-6Q-yny" firstAttribute="centerY" secondItem="7to-Zz-N1w" secondAttribute="centerY" id="GhW-3S-U62"/>
                             <constraint firstItem="WA3-wo-J73" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kqk-ts-bji"/>
-                            <constraint firstItem="oHe-6Q-yny" firstAttribute="centerX" secondItem="7to-Zz-N1w" secondAttribute="centerX" id="x5K-mO-OTZ"/>
                             <constraint firstItem="WA3-wo-J73" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="yvr-2Z-PFB"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="errorLabel" destination="7to-Zz-N1w" id="cBY-BW-sGD"/>
                         <outlet property="facebookLoginButton" destination="569-o0-Dzi" id="uiU-OH-yI7"/>
                         <outlet property="passwordTextField" destination="A06-P5-JaA" id="AwW-on-bLY"/>
                         <outlet property="registerButton" destination="9dh-r5-3pe" id="zJl-Fr-abS"/>

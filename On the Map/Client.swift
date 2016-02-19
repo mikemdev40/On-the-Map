@@ -201,6 +201,10 @@ class Client {
         task.resume()
     }
     
+    class func retreivePosts() {
+        
+    }
+    
     class func logoutOfUdacity(completionHandler: (success: Bool, error: String?) ->  Void) {
         let request = NSMutableURLRequest(URL: NSURL(string: Constants.udacitySessionURL)!)
         request.HTTPMethod = "DELETE"
