@@ -32,5 +32,6 @@ struct StudentInformation {
         self.longitude = dictionary["longitude"] as! Float
         self.createdAt = dictionary["createdAt"] as! String
         self.updatedAt = dictionary["updatedAt"] as! String
+        
      }
 }

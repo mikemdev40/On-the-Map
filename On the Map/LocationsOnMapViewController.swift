@@ -9,12 +9,21 @@
 import UIKit
 import MapKit
 
-class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
+class LocationsOnMapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
             mapView.delegate = self
             mapView.mapType = .Standard
+            mapView.showsUserLocation = true
+            mapView.userTrackingMode = .None
+        }
+    }
+    
+    var locationManager = CLLocationManager() {
+        didSet {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
         }
     }
     
@@ -32,34 +41,23 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
                 self.displayLoginErrorAlert("Error", message: error!, handler: nil)
             } else if let results = results {
                 StudentPosts.generatePostsFromData(results)
-                self.createAndAddAnnotations()
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.createAndAddAnnotations()
+                })
             }
         }
     }
     
     func createAndAddAnnotations() {
         if !StudentPosts.sharedInstance.posts.isEmpty {
-            print("not empty")
-            var annotationsToAdd = [MKPointAnnotation]()
-            
+          //  mapView.removeAnnotations(mapView.annotations)
+            var annotationsToAdd = [PostAnnotation]()
             for studentInfo in StudentPosts.sharedInstance.posts {
-                
-                let latitude = CLLocationDegrees(Double(studentInfo.latitude))
-                let longitude = CLLocationDegrees(Double(studentInfo.longitude))
-                let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                
-                // Here we create the annotation and set its coordiate, title, and subtitle properties
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = coordinate
-                annotation.title = "\(studentInfo.firstName) \(studentInfo.lastName)"
-                annotation.subtitle = studentInfo.mediaURL
-                
-                // Finally we place the annotation in an array of annotations.
+                let annotation = PostAnnotation(studentInfo: studentInfo)
                 annotationsToAdd.append(annotation)
             }
-            
-            // When the array is complete, we add the annotations to the map.
             mapView.addAnnotations(annotationsToAdd)
+            print(mapView.annotations.count)
         }
     }
     
@@ -69,7 +67,22 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
         presentViewController(ac, animated: true, completion: nil)
     }
     
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print(locations[0])
+        print(mapView.userLocation)
+    }
+    
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+        
+    }
+    
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        //prevents the user's location from being presented as a red pin, and enables the annoation for the user location to retain its default blue dot beacon
+        if annotation.isKindOfClass(MKUserLocation) {
+            return nil
+        }
+        
         var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier("location") as? MKPinAnnotationView
         
         if annotationView == nil {
@@ -90,6 +103,9 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
         
         refresh()
     }
