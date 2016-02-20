@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class LocationsOnMapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
+class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
@@ -22,7 +22,6 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate, CLLocat
     
     var locationManager = CLLocationManager() {
         didSet {
-            locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
         }
     }
@@ -32,7 +31,7 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate, CLLocat
     }
     
     func refresh() {
-        print("reresh MAP")
+        print("refresh MAP")
         
         StudentPosts.clearPosts()
         
@@ -50,7 +49,7 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate, CLLocat
     
     func createAndAddAnnotations() {
         if !StudentPosts.sharedInstance.posts.isEmpty {
-          //  mapView.removeAnnotations(mapView.annotations)
+            mapView.removeAnnotations(mapView.annotations)
             var annotationsToAdd = [PostAnnotation]()
             for studentInfo in StudentPosts.sharedInstance.posts {
                 let annotation = PostAnnotation(studentInfo: studentInfo)
@@ -65,11 +64,6 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate, CLLocat
         let ac = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: handler))
         presentViewController(ac, animated: true, completion: nil)
-    }
-    
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(locations[0])
-        print(mapView.userLocation)
     }
     
     func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
@@ -105,7 +99,6 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate, CLLocat
         super.viewDidLoad()
         
         locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
         
         refresh()
     }
