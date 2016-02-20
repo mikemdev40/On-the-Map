@@ -77,6 +77,7 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
             annotationView?.canShowCallout = true
             annotationView?.pinTintColor = MKPinAnnotationView.redPinColor()
             annotationView?.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)  //the detail disclosure type seems to be the only type that enables "press ANYWHERE on the callout, including the whitespace to the left of the aactual right accessory view, in order to call the mapView:calloutAccessoryControlTapped: delegate method, and i can't figure out why! for example, if you change this button type to "contact add" instead then run, you have to tap the actual accessory icon (and ONLY the icon) to activate mapView:calloutAccessoryControlTapped:; tapping on the whitespace of the callout does NOT call the method!
+        
         } else {
             annotationView?.annotation = annotation
         }
