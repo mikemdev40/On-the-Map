@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import SafariServices
 
 class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
 
@@ -62,10 +63,6 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
         presentViewController(ac, animated: true, completion: nil)
     }
     
-    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-        
-    }
-    
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
         //prevents the user's location from being presented as a red pin, and enables the annoation for the user location to retain its default blue dot beacon
@@ -87,8 +84,29 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
         return annotationView
     }
     
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+
+    }
+    
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        
+        //the new safari view controller crashes when it is opened from a url that doesn't start with http or https; i used a version of the fix mentioned in the following stackoverflow page to address this: http://stackoverflow.com/questions/32864287/sfsafariviewcontroller-crashing-on-valid-nsurl
+        if let subtitle = view.annotation?.subtitle {
+            if let subtitle = subtitle {
+                if let url = NSURL(string: subtitle) {
+                    if ["http", "https"].contains(url.scheme.lowercaseString) {
+                        let safariViewController = SFSafariViewController(URL: url)
+                        presentViewController(safariViewController, animated: true, completion: nil)
+                    } else {
+                        let updatedURL = "http://" + subtitle
+                        if let newNSURL = NSURL(string: updatedURL) {
+                            let safariViewController = SFSafariViewController(URL: newNSURL)
+                            presentViewController(safariViewController, animated: true, completion: nil)
+                            //UIApplication.sharedApplication().openURL(newNSURL)
+                        }
+                    }
+                }
+            }
+        }
     }
     
     override func viewDidLoad() {

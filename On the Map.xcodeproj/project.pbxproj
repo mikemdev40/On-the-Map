@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A4E54CE1C78B1C00079044E /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABB8C561C74074B0063E500 /* FBSDKCoreKit.framework */; };
+		7A4E54CF1C78B1C00079044E /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABB8C571C74074B0063E500 /* FBSDKLoginKit.framework */; };
 		7A8E96D11C6C1A9B0072B8AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8E96D01C6C1A9B0072B8AC /* AppDelegate.swift */; };
 		7A8E96D31C6C1A9B0072B8AC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8E96D21C6C1A9B0072B8AC /* LoginViewController.swift */; };
 		7A8E96D61C6C1A9B0072B8AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A8E96D41C6C1A9B0072B8AC /* Main.storyboard */; };
@@ -17,8 +19,6 @@
 		7A8E96EA1C6D6B5E0072B8AC /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8E96E91C6D6B5E0072B8AC /* TabBarViewController.swift */; };
 		7A8E96EC1C6D81890072B8AC /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8E96EB1C6D81890072B8AC /* StudentInformation.swift */; };
 		7A8E96EE1C6FC1630072B8AC /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8E96ED1C6FC1630072B8AC /* Client.swift */; };
-		7ABB8C581C74074B0063E500 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABB8C561C74074B0063E500 /* FBSDKCoreKit.framework */; };
-		7ABB8C591C74074B0063E500 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABB8C571C74074B0063E500 /* FBSDKLoginKit.framework */; };
 		7ABB8C5B1C776FA80063E500 /* StudentPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB8C5A1C776FA80063E500 /* StudentPosts.swift */; };
 		7ABB8C5D1C77CDEA0063E500 /* PostAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB8C5C1C77CDEA0063E500 /* PostAnnotation.swift */; };
 		7ABB8C7D1C7828C90063E500 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB8C7C1C7828C90063E500 /* PostTableViewCell.swift */; };
@@ -49,8 +49,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7ABB8C591C74074B0063E500 /* FBSDKLoginKit.framework in Frameworks */,
-				7ABB8C581C74074B0063E500 /* FBSDKCoreKit.framework in Frameworks */,
+				7A4E54CE1C78B1C00079044E /* FBSDKCoreKit.framework in Frameworks */,
+				7A4E54CF1C78B1C00079044E /* FBSDKLoginKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,7 +271,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -310,7 +310,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -324,6 +324,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)/On",
+					the,
+					Map,
 					"$(PROJECT_DIR)/On",
 					the,
 					Map,
@@ -342,6 +345,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)/On",
+					the,
+					Map,
 					"$(PROJECT_DIR)/On",
 					the,
 					Map,
