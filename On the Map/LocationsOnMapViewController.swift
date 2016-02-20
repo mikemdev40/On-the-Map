@@ -76,7 +76,7 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
             annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "location")
             annotationView?.canShowCallout = true
             annotationView?.pinTintColor = MKPinAnnotationView.redPinColor()
-            annotationView?.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
+            annotationView?.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)  //the detail disclosure type seems to be the only type that enables "press ANYWHERE on the callout, including the whitespace to the left of the aactual right accessory view, in order to call the mapView:calloutAccessoryControlTapped: delegate method, and i can't figure out why! for example, if you change this button type to "contact add" instead then run, you have to tap the actual accessory icon (and ONLY the icon) to activate mapView:calloutAccessoryControlTapped:; tapping on the whitespace of the callout does NOT call the method!
         } else {
             annotationView?.annotation = annotation
         }
@@ -84,15 +84,12 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
         return annotationView
     }
     
-    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-
-    }
-    
+    //this delegate method gets invoked when whitespace of the callout is tapped (i.e. to the left of the "i" callout accessory button), in addition to the callout button iteself, but this is the case ONLY for the detail disclosure type of accessory button; for other button types, this methods gets invoked ONLY when the actual button is tapped (not sure why this exception exists)
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        //the new safari view controller crashes when it is opened from a url that doesn't start with http or https; i used a version of the fix mentioned in the following stackoverflow page to address this: http://stackoverflow.com/questions/32864287/sfsafariviewcontroller-crashing-on-valid-nsurl
         if let subtitle = view.annotation?.subtitle {
             if let subtitle = subtitle {
                 if let url = NSURL(string: subtitle) {
+                    //the new safari view controller crashes when it is opened from a url that doesn't start with http or https; i used a version of the fix mentioned in the following stackoverflow page to address this: http://stackoverflow.com/questions/32864287/sfsafariviewcontroller-crashing-on-valid-nsurl
                     if ["http", "https"].contains(url.scheme.lowercaseString) {
                         let safariViewController = SFSafariViewController(URL: url)
                         presentViewController(safariViewController, animated: true, completion: nil)
