@@ -43,34 +43,7 @@ class Client {
 
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
-            
-            if error != nil {
-                completionHandler(success: false, error: error?.localizedDescription)
-                
-            } else {
-                guard let data = data else {
-                    completionHandler(success: false, error: "There was an error getting the data.")
-                    return
-                }
-                let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
-                guard let parsedData = parseData(newData) else {
-                    completionHandler(success: false, error: "There was an error converting the data.")
-                    return
-                }
-                guard let udacityAccount = parsedData["account"] as? NSDictionary, udacitySession = parsedData["session"] as? NSDictionary else {
-                    let error = parsedData["error"] as? String
-                    completionHandler(success: false, error: error)
-                    return
-                }
-                guard let key = udacityAccount["key"] as? String, sessionID = udacitySession["id"] as? String else {
-                    completionHandler(success: false, error: "There was an error.")
-                    return
-                }
-                
-                Client.udacityUserID = key
-                Client.udacitySessionID = sessionID
-                self.getUdacityUserInfo(completionHandler)
-            }
+            getUdacitySession(data, response: response, error: error, completionHandler: completionHandler)
         }
         task.resume()
     }
@@ -89,34 +62,7 @@ class Client {
         
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
-            
-            if error != nil {
-                completionHandler(success: false, error: error?.localizedDescription)
-                
-            } else {
-                guard let data = data else {
-                    completionHandler(success: false, error: "There was an error getting the data.")
-                    return
-                }
-                let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
-                guard let parsedData = parseData(newData) else {
-                    completionHandler(success: false, error: "There was an error converting the data.")
-                    return
-                }
-                guard let udacityAccount = parsedData["account"] as? NSDictionary, udacitySession = parsedData["session"] as? NSDictionary else {
-                    let error = parsedData["error"] as? String
-                    completionHandler(success: false, error: error)
-                    return
-                }
-                guard let key = udacityAccount["key"] as? String, sessionID = udacitySession["id"] as? String else {
-                    completionHandler(success: false, error: "There was an error.")
-                    return
-                }
-                
-                Client.udacityUserID = key
-                Client.udacitySessionID = sessionID
-                self.getUdacityUserInfo(completionHandler)
-            }
+            getUdacitySession(data, response: response, error: error, completionHandler: completionHandler)
         }
         task.resume()
     }
@@ -210,6 +156,36 @@ class Client {
     
     class func logoutOfFacebook() {
         Client.facebookManager.logOut()
+    }
+    
+    class func getUdacitySession(data: NSData?, response: NSURLResponse?, error: NSError?, completionHandler: (success: Bool, error: String?) -> Void) {
+        if error != nil {
+            completionHandler(success: false, error: error?.localizedDescription)
+            
+        } else {
+            guard let data = data else {
+                completionHandler(success: false, error: "There was an error getting the data.")
+                return
+            }
+            let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+            guard let parsedData = parseData(newData) else {
+                completionHandler(success: false, error: "There was an error converting the data.")
+                return
+            }
+            guard let udacityAccount = parsedData["account"] as? NSDictionary, udacitySession = parsedData["session"] as? NSDictionary else {
+                let error = parsedData["error"] as? String
+                completionHandler(success: false, error: error)
+                return
+            }
+            guard let key = udacityAccount["key"] as? String, sessionID = udacitySession["id"] as? String else {
+                completionHandler(success: false, error: "There was an error.")
+                return
+            }
+            
+            Client.udacityUserID = key
+            Client.udacitySessionID = sessionID
+            self.getUdacityUserInfo(completionHandler)
+        }
     }
     
     class func parseData(dataToParse: NSData) -> NSDictionary? {

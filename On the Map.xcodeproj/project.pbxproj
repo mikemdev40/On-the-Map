@@ -21,6 +21,7 @@
 		7ABB8C591C74074B0063E500 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABB8C571C74074B0063E500 /* FBSDKLoginKit.framework */; };
 		7ABB8C5B1C776FA80063E500 /* StudentPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB8C5A1C776FA80063E500 /* StudentPosts.swift */; };
 		7ABB8C5D1C77CDEA0063E500 /* PostAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB8C5C1C77CDEA0063E500 /* PostAnnotation.swift */; };
+		7ABB8C7D1C7828C90063E500 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB8C7C1C7828C90063E500 /* PostTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		7ABB8C571C74074B0063E500 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7ABB8C5A1C776FA80063E500 /* StudentPosts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentPosts.swift; sourceTree = "<group>"; };
 		7ABB8C5C1C77CDEA0063E500 /* PostAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostAnnotation.swift; sourceTree = "<group>"; };
+		7ABB8C7C1C7828C90063E500 /* PostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				7A8E96D41C6C1A9B0072B8AC /* Main.storyboard */,
+				7ABB8C7C1C7828C90063E500 /* PostTableViewCell.swift */,
 				7A8E96D01C6C1A9B0072B8AC /* AppDelegate.swift */,
 				7A8E96E61C6D68A30072B8AC /* Model */,
 				7A8E96E71C6D68AA0072B8AC /* View */,
@@ -204,6 +207,7 @@
 				7A8E96E51C6D68930072B8AC /* LocationsInTableViewController.swift in Sources */,
 				7A8E96D31C6C1A9B0072B8AC /* LoginViewController.swift in Sources */,
 				7ABB8C5B1C776FA80063E500 /* StudentPosts.swift in Sources */,
+				7ABB8C7D1C7828C90063E500 /* PostTableViewCell.swift in Sources */,
 				7A8E96EA1C6D6B5E0072B8AC /* TabBarViewController.swift in Sources */,
 				7A8E96D11C6C1A9B0072B8AC /* AppDelegate.swift in Sources */,
 			);
@@ -325,6 +329,7 @@
 					Map,
 				);
 				INFOPLIST_FILE = "On the Map/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mikemiller.On-the-Map";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -342,6 +347,7 @@
 					Map,
 				);
 				INFOPLIST_FILE = "On the Map/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mikemiller.On-the-Map";
 				PRODUCT_NAME = "$(TARGET_NAME)";

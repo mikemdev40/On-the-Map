@@ -31,10 +31,7 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func refresh() {
-        print("refresh MAP")
-        
         StudentPosts.clearPosts()
-        
         Client.retrieveStudentInformation { (success, error, results) in
             if error != nil {
                 self.displayLoginErrorAlert("Error", message: error!, handler: nil)
@@ -56,7 +53,6 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
                 annotationsToAdd.append(annotation)
             }
             mapView.addAnnotations(annotationsToAdd)
-            print(mapView.annotations.count)
         }
     }
     
