@@ -18,23 +18,28 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
         }
     }
     
+    let refresher = UIRefreshControl()
+
     func post() {
         print("post TABLE")
     }
     
     func refresh() {
-        print("refresh TABLE")
-
-        StudentPosts.clearPosts()
+        refresher.beginRefreshing()
         
+        StudentPosts.clearPosts()
         Client.retrieveStudentInformation { (success, error, results) in
             if error != nil {
-                self.displayLoginErrorAlert("Error", message: error!, handler: nil)
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.refresher.endRefreshing()
+                    self.displayLoginErrorAlert("Error", message: error!, handler: nil)
+                }
             } else if let results = results {
                 StudentPosts.generatePostsFromData(results)
-                dispatch_async(dispatch_get_main_queue(), {
+                dispatch_async(dispatch_get_main_queue()) {
                     self.tableView.reloadData()
-                })
+                    self.refresher.endRefreshing()
+                }
             }
         }
     }
@@ -87,5 +92,9 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        refresher.addTarget(self, action: "refresh", forControlEvents: .ValueChanged)
+        refresher.attributedTitle = NSAttributedString(string: "Retrieving updated posts!")
+        //tableView.addSubview(refresher)
+        tableView.insertSubview(refresher, atIndex: 0)   //"addSubview" results in the refresher being visible through the tableview for a split second when the refresher ends refreshing, but using "insertUbview" prevents that, per http://stackoverflow.com/questions/12497940/uirefreshcontrol-without-uitableviewcontroller?lq=1
     }
 }
