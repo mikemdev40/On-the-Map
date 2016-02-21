@@ -51,27 +51,21 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
         
         cell.nameLabel.text = postToShow.firstName + " " + postToShow.lastName
         cell.urlLabel.text = postToShow.mediaURL
-        cell.locationLabel.text = "\(postToShow.latitude)"
-        cell.dateLabel.text = postToShow.createdAt
-    //    cell.locationLabel.text = getLocationFromCoordinate(postToShow.latitude, longitude: postToShow.longitude)
-    //    cell.dateLabel.text = getDateFromString(postToShow.createdAt)
+        cell.locationLabel.text = postToShow.mapString
+        cell.dateLabel.text = getDateFromString(postToShow.updatedAt)
         
         return cell
         
     }
     
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return StudentPosts.sharedInstance.posts.count
     }
     
-    func getLocationFromCoordinate(latitude: Float, longitude: Float) -> String {
-    
-        return ""
-    }
-    
     func getDateFromString(dateStringToConvert: String) -> String {
-        
-        return ""
+        let newString = dateStringToConvert.substringToIndex(dateStringToConvert.startIndex.advancedBy(10))
+        return newString
     }
     
     override func viewDidLoad() {
