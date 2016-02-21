@@ -12,6 +12,9 @@ import SafariServices
 
 class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
 
+    struct Constants {
+        static let openPostViewSegue = "SegueFromMapToPost"
+    }
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
             mapView.delegate = self
@@ -28,7 +31,7 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func post() {
-        print("post MAP")
+        performSegueWithIdentifier(Constants.openPostViewSegue, sender: self)
     }
     
     func refresh() {

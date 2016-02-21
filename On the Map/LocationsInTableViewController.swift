@@ -11,6 +11,10 @@ import SafariServices
 
 class LocationsInTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    struct Constants {
+        static let openPostViewSegue = "SegueFromTableToPost"
+    }
+    
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.delegate = self
@@ -21,7 +25,7 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
     let refresher = UIRefreshControl()
 
     func post() {
-        print("post TABLE")
+        performSegueWithIdentifier(Constants.openPostViewSegue, sender: self)
     }
     
     func refresh() {

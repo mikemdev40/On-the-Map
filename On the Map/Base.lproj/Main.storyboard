@@ -161,7 +161,7 @@
                     <tabBarItem key="tabBarItem" title="Item" id="wRB-5f-wp3"/>
                     <connections>
                         <outlet property="mapView" destination="kck-9O-TOt" id="KuL-bk-IOS"/>
-                        <segue destination="HVk-Bl-hfl" kind="presentation" identifier="SegueFromMapToPost" id="haE-Ri-In6"/>
+                        <segue destination="K8j-Tp-qiu" kind="presentation" identifier="SegueFromMapToPost" id="haE-Ri-In6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WfM-Ya-m8f" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -295,7 +295,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="HxS-AY-Q5B" id="nHt-VP-lm8"/>
-                        <segue destination="HVk-Bl-hfl" kind="presentation" identifier="SegueFromTableToPost" id="kKh-ft-Zkw"/>
+                        <segue destination="K8j-Tp-qiu" kind="presentation" identifier="SegueFromTableToPost" id="kKh-ft-Zkw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="w5o-je-IE8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -314,30 +314,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OpQ-ru-o13">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="325.5"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OpQ-ru-o13">
+                                <rect key="frame" x="0.0" y="64" width="600" height="182"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="DSK-Vp-k06">
-                                        <rect key="frame" x="20" y="30" width="560" height="150"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="DSK-Vp-k06">
+                                        <rect key="frame" x="20" y="15" width="560" height="152"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is your location?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wmh-Uw-ISx">
-                                                <rect key="frame" x="178" y="0.0" width="204" height="26"/>
+                                                <rect key="frame" x="178" y="0.0" width="204" height="32"/>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="20"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter location or tap &quot;Use Current Location&quot;" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f0B-rW-vFc">
-                                                <rect key="frame" x="0.0" y="36" width="560" height="30"/>
+                                                <rect key="frame" x="0.0" y="40" width="560" height="32"/>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="83g-5q-6h1">
-                                                <rect key="frame" x="221" y="76" width="119" height="32"/>
+                                                <rect key="frame" x="220" y="80" width="119" height="32"/>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
                                                 <state key="normal" title="Find on the Map!"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iuz-B6-njW">
-                                                <rect key="frame" x="209" y="118" width="143" height="32"/>
+                                                <rect key="frame" x="208" y="120" width="143" height="32"/>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
                                                 <state key="normal" title="Use Current Location"/>
                                             </button>
@@ -349,9 +349,10 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="DSK-Vp-k06" firstAttribute="top" secondItem="OpQ-ru-o13" secondAttribute="top" constant="15" id="71d-34-EUp"/>
                                     <constraint firstAttribute="bottom" secondItem="DSK-Vp-k06" secondAttribute="bottom" id="FLr-FR-Rbm"/>
                                     <constraint firstAttribute="height" constant="200" id="Unu-vO-M7P"/>
-                                    <constraint firstAttribute="bottom" secondItem="DSK-Vp-k06" secondAttribute="bottom" constant="10" id="dCV-Ty-KjH"/>
+                                    <constraint firstAttribute="bottom" secondItem="DSK-Vp-k06" secondAttribute="bottom" constant="15" id="nBX-Wy-H91"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -364,13 +365,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="DSK-Vp-k06" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leadingMargin" id="6KR-7H-LRt"/>
-                            <constraint firstItem="OpQ-ru-o13" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leading" id="AW6-vt-WBR"/>
                             <constraint firstAttribute="trailingMargin" secondItem="OpQ-ru-o13" secondAttribute="trailing" constant="-20" id="EEl-KB-Fd3"/>
                             <constraint firstItem="DSK-Vp-k06" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leadingMargin" constant="-12" id="NgA-1C-pby"/>
-                            <constraint firstItem="OpQ-ru-o13" firstAttribute="top" secondItem="L2s-rG-CJ8" secondAttribute="top" id="c3Z-Fz-rsr"/>
+                            <constraint firstItem="OpQ-ru-o13" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leadingMargin" constant="-20" id="aXC-nW-xGW"/>
                             <constraint firstItem="DSK-Vp-k06" firstAttribute="top" secondItem="XM6-te-PZF" secondAttribute="bottom" constant="10" id="dyb-Lp-1tl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="OpQ-ru-o13" secondAttribute="trailing" constant="-20" id="f3A-BU-JzY"/>
                             <constraint firstAttribute="trailingMargin" secondItem="DSK-Vp-k06" secondAttribute="trailing" id="hDX-zo-XM2"/>
-                            <constraint firstAttribute="trailing" secondItem="OpQ-ru-o13" secondAttribute="trailing" id="ks0-eR-7Zo"/>
+                            <constraint firstItem="OpQ-ru-o13" firstAttribute="top" secondItem="XM6-te-PZF" secondAttribute="bottom" id="qKT-mL-ndo"/>
                             <constraint firstItem="OpQ-ru-o13" firstAttribute="top" secondItem="XM6-te-PZF" secondAttribute="bottom" constant="-20" id="t7t-d5-C2c"/>
                             <constraint firstItem="OpQ-ru-o13" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leadingMargin" constant="-20" id="uHx-g8-Jqg"/>
                         </constraints>
@@ -380,13 +381,17 @@
                                 <exclude reference="t7t-d5-C2c"/>
                                 <exclude reference="uHx-g8-Jqg"/>
                                 <exclude reference="NgA-1C-pby"/>
+                                <exclude reference="dyb-Lp-1tl"/>
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" id="AeD-yB-R9x">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="m0y-Xs-yLw"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wQT-Zg-Ko4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2988" y="525"/>
+            <point key="canvasLocation" x="3800" y="525"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="F06-5L-UmN">
@@ -403,6 +408,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Rg-vT-dL9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="816" y="501"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="NAP-8k-eOg">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="K8j-Tp-qiu" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Yax-nO-xO3">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="HVk-Bl-hfl" kind="relationship" relationship="rootViewController" id="O4B-Nj-kJd"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lXm-ex-0ZG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2988" y="525"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

@@ -10,10 +10,15 @@ import UIKit
 
 class MakePostViewController: UIViewController {
 
+    func cancel() {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        title = "Make a Post"
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancel")
+        navigationItem.leftBarButtonItem = cancelButton
     }
-
 }
