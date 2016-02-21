@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class LocationsInTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -45,7 +46,6 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCellWithIdentifier("cell") as! PostTableViewCell
         let postToShow = StudentPosts.sharedInstance.posts[indexPath.row]
         
@@ -58,6 +58,22 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
         
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let mediaURL = StudentPosts.sharedInstance.posts[indexPath.row].mediaURL
+        if let url = NSURL(string: mediaURL) {
+            if ["http", "https"].contains(url.scheme.lowercaseString) {
+                let safariViewController = SFSafariViewController(URL: url)
+                presentViewController(safariViewController, animated: true, completion: nil)
+            } else {
+                let updatedURL = "http://" + mediaURL
+                if let newNSURL = NSURL(string: updatedURL) {
+                    let safariViewController = SFSafariViewController(URL: newNSURL)
+                    presentViewController(safariViewController, animated: true, completion: nil)
+                }
+            }
+        }
+    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return StudentPosts.sharedInstance.posts.count
