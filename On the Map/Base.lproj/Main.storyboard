@@ -385,9 +385,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="AeD-yB-R9x">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="m0y-Xs-yLw"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="AeD-yB-R9x"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wQT-Zg-Ko4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
