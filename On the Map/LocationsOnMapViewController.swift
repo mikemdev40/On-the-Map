@@ -32,8 +32,10 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     }
     
     func refresh() {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         StudentPosts.clearPosts()
         Client.retrieveStudentInformation { (success, error, results) in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             if error != nil {
                 self.displayLoginErrorAlert("Error", message: error!, handler: nil)
             } else if let results = results {

@@ -26,9 +26,11 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
     
     func refresh() {
         refresher.beginRefreshing()
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
         StudentPosts.clearPosts()
         Client.retrieveStudentInformation { (success, error, results) in
+            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             if error != nil {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.refresher.endRefreshing()
