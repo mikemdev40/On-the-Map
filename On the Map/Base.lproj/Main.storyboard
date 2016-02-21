@@ -335,11 +335,17 @@
                                                 <rect key="frame" x="220" y="80" width="119" height="32"/>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
                                                 <state key="normal" title="Find on the Map!"/>
+                                                <connections>
+                                                    <action selector="findOnTheMap:" destination="HVk-Bl-hfl" eventType="touchUpInside" id="IzB-wD-ENF"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iuz-B6-njW">
                                                 <rect key="frame" x="208" y="120" width="143" height="32"/>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
                                                 <state key="normal" title="Use Current Location"/>
+                                                <connections>
+                                                    <action selector="useCurrentLocation:" destination="HVk-Bl-hfl" eventType="touchUpInside" id="pvh-vm-yn6"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -361,13 +367,20 @@
                                     </mask>
                                 </variation>
                             </view>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="92C-c7-VvG">
+                                <rect key="frame" x="0.0" y="246" width="600" height="354"/>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="92C-c7-VvG" firstAttribute="top" secondItem="OpQ-ru-o13" secondAttribute="bottom" id="4ZM-iK-UPv"/>
                             <constraint firstItem="DSK-Vp-k06" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leadingMargin" id="6KR-7H-LRt"/>
                             <constraint firstAttribute="trailingMargin" secondItem="OpQ-ru-o13" secondAttribute="trailing" constant="-20" id="EEl-KB-Fd3"/>
                             <constraint firstItem="DSK-Vp-k06" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leadingMargin" constant="-12" id="NgA-1C-pby"/>
+                            <constraint firstItem="NCe-dK-MWa" firstAttribute="top" secondItem="92C-c7-VvG" secondAttribute="bottom" id="PME-CQ-7gh"/>
+                            <constraint firstAttribute="trailing" secondItem="92C-c7-VvG" secondAttribute="trailing" id="ZJi-9h-EQp"/>
                             <constraint firstItem="OpQ-ru-o13" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leadingMargin" constant="-20" id="aXC-nW-xGW"/>
+                            <constraint firstItem="92C-c7-VvG" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leading" id="cDR-Pa-nbz"/>
                             <constraint firstItem="DSK-Vp-k06" firstAttribute="top" secondItem="XM6-te-PZF" secondAttribute="bottom" constant="10" id="dyb-Lp-1tl"/>
                             <constraint firstAttribute="trailingMargin" secondItem="OpQ-ru-o13" secondAttribute="trailing" constant="-20" id="f3A-BU-JzY"/>
                             <constraint firstAttribute="trailingMargin" secondItem="DSK-Vp-k06" secondAttribute="trailing" id="hDX-zo-XM2"/>
@@ -386,6 +399,10 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="AeD-yB-R9x"/>
+                    <connections>
+                        <outlet property="locationTextField" destination="f0B-rW-vFc" id="Q1h-2v-rmq"/>
+                        <outlet property="mapView" destination="92C-c7-VvG" id="daT-rh-gnH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wQT-Zg-Ko4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
