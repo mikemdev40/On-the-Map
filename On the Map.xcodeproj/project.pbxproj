@@ -22,6 +22,7 @@
 		7ABB8C5B1C776FA80063E500 /* StudentPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB8C5A1C776FA80063E500 /* StudentPosts.swift */; };
 		7ABB8C5D1C77CDEA0063E500 /* PostAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB8C5C1C77CDEA0063E500 /* PostAnnotation.swift */; };
 		7ABB8C7D1C7828C90063E500 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB8C7C1C7828C90063E500 /* PostTableViewCell.swift */; };
+		7AC7C6291C7A18F900F46C3A /* MakePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC7C6281C7A18F900F46C3A /* MakePostViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		7ABB8C5A1C776FA80063E500 /* StudentPosts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentPosts.swift; sourceTree = "<group>"; };
 		7ABB8C5C1C77CDEA0063E500 /* PostAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostAnnotation.swift; sourceTree = "<group>"; };
 		7ABB8C7C1C7828C90063E500 /* PostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		7AC7C6281C7A18F900F46C3A /* MakePostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MakePostViewController.swift; path = ../MakePostViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +79,6 @@
 			isa = PBXGroup;
 			children = (
 				7A8E96D41C6C1A9B0072B8AC /* Main.storyboard */,
-				7ABB8C7C1C7828C90063E500 /* PostTableViewCell.swift */,
 				7A8E96D01C6C1A9B0072B8AC /* AppDelegate.swift */,
 				7A8E96E61C6D68A30072B8AC /* Model */,
 				7A8E96E71C6D68AA0072B8AC /* View */,
@@ -104,6 +105,7 @@
 		7A8E96E71C6D68AA0072B8AC /* View */ = {
 			isa = PBXGroup;
 			children = (
+				7ABB8C7C1C7828C90063E500 /* PostTableViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -115,6 +117,7 @@
 				7A8E96E91C6D6B5E0072B8AC /* TabBarViewController.swift */,
 				7A8E96E41C6D68930072B8AC /* LocationsInTableViewController.swift */,
 				7A8E96E21C6D68770072B8AC /* LocationsOnMapViewController.swift */,
+				7AC7C6281C7A18F900F46C3A /* MakePostViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				7ABB8C5D1C77CDEA0063E500 /* PostAnnotation.swift in Sources */,
 				7A8E96EE1C6FC1630072B8AC /* Client.swift in Sources */,
 				7A8E96E31C6D68770072B8AC /* LocationsOnMapViewController.swift in Sources */,
+				7AC7C6291C7A18F900F46C3A /* MakePostViewController.swift in Sources */,
 				7A8E96E51C6D68930072B8AC /* LocationsInTableViewController.swift in Sources */,
 				7A8E96D31C6C1A9B0072B8AC /* LoginViewController.swift in Sources */,
 				7ABB8C5B1C776FA80063E500 /* StudentPosts.swift in Sources */,
