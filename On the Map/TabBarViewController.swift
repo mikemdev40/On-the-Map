@@ -53,5 +53,4 @@ class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
         viewControllers?[1].tabBarItem.image = UIImage(named: "list")
         viewControllers?[1].title = "List"
     }
-
 }

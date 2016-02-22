@@ -116,8 +116,6 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         
         locationManager.requestWhenInUseAuthorization()
-        
         refresh()
     }
-
 }

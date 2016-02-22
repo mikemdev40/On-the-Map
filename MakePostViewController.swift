@@ -57,8 +57,36 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
                 })
             } else if let placemarks = placemarkArray {
                 let placemark = placemarks[0]
-                print(placemark)
+                self.placePinOnMap(placemark, originalString: locationString)
             }
+        }
+    }
+    
+    func placePinOnMap(placemark: CLPlacemark, originalString: String) {
+        if let location = placemark.location {
+            let annotation = MKPointAnnotation()
+            var placemarkComponents = [String]()
+    
+            annotation.coordinate = location.coordinate
+            annotation.title = originalString
+            
+            if let neighborhood = placemark.subLocality {
+                placemarkComponents.append(neighborhood)
+            }
+            if let city = placemark.locality {
+                placemarkComponents.append(city)
+            }
+            if let state = placemark.administrativeArea {
+                placemarkComponents.append(state)
+            }
+            if let country = placemark.country {
+                placemarkComponents.append(country)
+            }
+            
+            let placemarkInfo = placemarkComponents.joinWithSeparator(", ")
+            annotation.subtitle = placemarkInfo
+            
+            mapView.addAnnotation(annotation)
         }
     }
     
@@ -75,6 +103,19 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        var pin = mapView.dequeueReusableAnnotationViewWithIdentifier("pin") as? MKPinAnnotationView
+        if pin == nil {
+            pin = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+            pin?.canShowCallout = true
+            pin?.pinTintColor = MKPinAnnotationView.greenPinColor()
+        }
+        else {
+            pin?.annotation = annotation
+        }
+        return pin
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
