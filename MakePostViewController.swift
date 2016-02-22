@@ -11,6 +11,11 @@ import MapKit
 
 class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate {
 
+    struct Constants {
+        static let latitudeDelta: CLLocationDegrees = 0.05
+        static let longitudeDelta: CLLocationDegrees = 0.05
+    }
+    
     @IBOutlet weak var locationTextField: UITextField! {
         didSet {
             locationTextField.delegate = self
@@ -49,12 +54,11 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         
         //BEGIN ACTIVITY INDICATOR/FADED BACKGROUND
         
+        //note that it wasn't necessary to dispatch to main queue since the completion handler for the geocoder completes on the main thread, as per the documentation
         geocoder.geocodeAddressString(locationString) { (placemarkArray, error) in
             //END ACTIVITY INDICATOR/FADED BACKGROUND
             if let error = error {
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.displayErrorAlert("Error getting location", message: error.localizedDescription, handler: nil)
-                })
+                self.displayErrorAlert("Error getting location", message: error.localizedDescription, handler: nil)
             } else if let placemarks = placemarkArray {
                 let placemark = placemarks[0]
                 self.placePinOnMap(placemark, originalString: locationString)
@@ -87,6 +91,9 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
             annotation.subtitle = placemarkInfo
             
             mapView.addAnnotation(annotation)
+            
+            let region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: Constants.latitudeDelta, longitudeDelta: Constants.longitudeDelta))
+            mapView.setRegion(region, animated: true)
         }
     }
     
