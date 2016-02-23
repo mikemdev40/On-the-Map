@@ -36,6 +36,14 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         }
     }
     
+    @IBOutlet weak var spinner: UIActivityIndicatorView! {
+        didSet {
+            spinner.hidesWhenStopped = true
+        }
+    }
+    
+    let blurView = UIVisualEffectView()
+    
     //use of a lazily initialized variable, as an alternative to setting the properties of the location manager in the viewDidLoad; although both methods accomplish the same thing - a location manager with relevant properties set before it is used elsewhere - i chose to use a lazy property just for practice of another method
     lazy var locationManager: CLLocationManager = {
         let lazyLocationManager = CLLocationManager()
@@ -60,8 +68,10 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         case .NotDetermined:
             locationManager.requestWhenInUseAuthorization()
         case .AuthorizedWhenInUse:
+            displayBlurEffect(true)
             locationManager.requestLocation()
         case .AuthorizedAlways:
+            displayBlurEffect(true)
             locationManager.requestLocation()
         default:
             displayErrorAlert("Location services disabled", message: "Please re-enable location services in Settings for this app to use this feature!", handler: nil)
@@ -69,9 +79,8 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     }
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        print("changed")
         if status == .AuthorizedWhenInUse {
-            print("authorized")
+            displayBlurEffect(true)
             locationManager.requestLocation()
         }
     }
@@ -79,11 +88,11 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     func getLocationFromEntry(locationString: String) {
         let geocoder = CLGeocoder()
         
-        //BEGIN ACTIVITY INDICATOR/FADED BACKGROUND
+        displayBlurEffect(true)
         
         //note that it wasn't necessary to dispatch to main queue since the completion handler for the geocoder completes on the main thread, as per the documentation
-        geocoder.geocodeAddressString(locationString) { (placemarkArray, error) in
-            //END ACTIVITY INDICATOR/FADED BACKGROUND
+        geocoder.geocodeAddressString(locationString) {[unowned self] (placemarkArray, error) in
+            self.displayBlurEffect(false)
             if let error = error {
                 self.displayErrorAlert("Error getting location", message: error.localizedDescription, handler: nil)
             } else if let placemarks = placemarkArray {
@@ -139,6 +148,20 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         }
     }
     
+    func displayBlurEffect(enable: Bool) {
+        if enable {
+            mapView.addSubview(blurView)
+            blurView.frame = mapView.bounds
+            UIView.animateWithDuration(0.2) {
+                self.blurView.effect = UIBlurEffect(style: .Light)
+            }
+            spinner.startAnimating()
+        } else {
+            blurView.removeFromSuperview()
+            spinner.stopAnimating()
+        }
+    }
+    
     func cancel() {
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -157,10 +180,9 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let userLocation = locations[0]
         
-        print("update location")
-        
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(userLocation) { (placemarkArray, error) in
+            self.displayBlurEffect(false)
             if let error = error {
                 self.displayErrorAlert("Error getting location", message: error.localizedDescription, handler: nil)
             } else if let placemarks = placemarkArray {
