@@ -19,14 +19,7 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
         didSet {
             mapView.delegate = self
             mapView.mapType = .Standard
-            mapView.showsUserLocation = true
             mapView.userTrackingMode = .None
-        }
-    }
-    
-    var locationManager = CLLocationManager() {
-        didSet {
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
         }
     }
     
@@ -115,7 +108,6 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationManager.requestWhenInUseAuthorization()
         refresh()
     }
 }

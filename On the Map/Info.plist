@@ -91,6 +91,6 @@
 		<string>fbshareextension</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Enables the display of your location on the map and the ability to use your current location to post!</string>
+	<string>Allows you to use your current location to post!</string>
 </dict>
 </plist>

@@ -8,8 +8,9 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
-class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate {
+class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate {
 
     struct Constants {
         static let latitudeDelta: CLLocationDegrees = 0.05
@@ -35,6 +36,14 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         }
     }
     
+    //use of a lazily initialized variable, as an alternative to setting the properties of the location manager in the viewDidLoad; although both methods accomplish the same thing - a location manager with relevant properties set before it is used elsewhere - i chose to use a lazy property just for practice of another method
+    lazy var locationManager: CLLocationManager = {
+        let lazyLocationManager = CLLocationManager()
+        lazyLocationManager.delegate = self
+        lazyLocationManager.desiredAccuracy = kCLLocationAccuracyBest
+        return lazyLocationManager
+    }()
+    
     @IBAction func findOnTheMap(sender: UIButton) {
         if locationTextField.text!.isEmpty {
             displayErrorAlert("Empty location!", message: "Please enter a location.", handler: nil)
@@ -47,6 +56,24 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     
     @IBAction func useCurrentLocation(sender: UIButton) {
         
+        switch CLLocationManager.authorizationStatus() {
+        case .NotDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .AuthorizedWhenInUse:
+            locationManager.requestLocation()
+        case .AuthorizedAlways:
+            locationManager.requestLocation()
+        default:
+            displayErrorAlert("Location services disabled", message: "Please re-enable location services in Settings for this app to use this feature!", handler: nil)
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        print("changed")
+        if status == .AuthorizedWhenInUse {
+            print("authorized")
+            locationManager.requestLocation()
+        }
     }
     
     func getLocationFromEntry(locationString: String) {
@@ -66,13 +93,12 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         }
     }
     
-    func placePinOnMap(placemark: CLPlacemark, originalString: String) {
+    func placePinOnMap(placemark: CLPlacemark, originalString: String?) {
         if let location = placemark.location {
             let annotation = MKPointAnnotation()
             var placemarkComponents = [String]()
     
             annotation.coordinate = location.coordinate
-            annotation.title = originalString
             
             if let neighborhood = placemark.subLocality {
                 placemarkComponents.append(neighborhood)
@@ -89,6 +115,22 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
             
             let placemarkInfo = placemarkComponents.joinWithSeparator(", ")
             annotation.subtitle = placemarkInfo
+            
+            if originalString != nil {
+                annotation.title = originalString
+            } else {
+                var titleString = [String]()
+                if let city = placemark.locality {
+                    titleString.append(city)
+                }
+                if let state = placemark.administrativeArea {
+                    titleString.append(state)
+                } else if let country = placemark.country {
+                    titleString.append(country)
+                }
+                let titleInfo = titleString.joinWithSeparator(", ")
+                annotation.title = titleInfo
+            }
             
             mapView.addAnnotation(annotation)
             
@@ -110,6 +152,26 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let userLocation = locations[0]
+        
+        print("update location")
+        
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(userLocation) { (placemarkArray, error) in
+            if let error = error {
+                self.displayErrorAlert("Error getting location", message: error.localizedDescription, handler: nil)
+            } else if let placemarks = placemarkArray {
+                let placemark = placemarks[0]
+                self.placePinOnMap(placemark, originalString: nil)
+            }
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        displayErrorAlert("Error getting location", message: error.localizedDescription, handler: nil)
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
