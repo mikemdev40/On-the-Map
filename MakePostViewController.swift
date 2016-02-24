@@ -98,6 +98,7 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
             } else if let placemarks = placemarkArray {
                 let placemark = placemarks[0]
                 self.placePinOnMap(placemark, originalString: locationString)
+                self.hideSaveCancelToolbar(false)
             }
         }
     }
@@ -141,11 +142,27 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
                 annotation.title = titleInfo
             }
             
-            mapView.addAnnotation(annotation)
+            mapView.removeAnnotations(mapView.annotations)
             
             let region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: Constants.latitudeDelta, longitudeDelta: Constants.longitudeDelta))
             mapView.setRegion(region, animated: true)
+            
+            mapView.addAnnotation(annotation)
+            mapView.selectAnnotation(mapView.annotations[0], animated: true)
         }
+    }
+    
+    func hideSaveCancelToolbar(show: Bool) {
+        navigationController?.setToolbarHidden(show, animated: true)
+    }
+    
+    func savePost() {
+        
+    }
+    
+    func cancelPost() {
+        mapView.removeAnnotations(mapView.annotations)
+        hideSaveCancelToolbar(true)
     }
     
     func displayBlurEffect(enable: Bool) {
@@ -162,14 +179,14 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         }
     }
     
-    func cancel() {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-    
     func displayErrorAlert(title: String, message: String, handler: ((UIAlertAction) -> Void)?) {
         let ac = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: handler))
         presentViewController(ac, animated: true, completion: nil)
+    }
+    
+    func cancel() {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -188,6 +205,7 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
             } else if let placemarks = placemarkArray {
                 let placemark = placemarks[0]
                 self.placePinOnMap(placemark, originalString: nil)
+                self.hideSaveCancelToolbar(false)
             }
         }
     }
@@ -213,11 +231,23 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         view.endEditing(true)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        hideSaveCancelToolbar(true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         title = "Make a Post"
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancel")
         navigationItem.leftBarButtonItem = cancelButton
+        
+        let saveButton = UIBarButtonItem(title: "Use Location", style: .Plain, target: self, action: "savePost")
+        let trashButton = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "cancelPost")
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+        toolbarItems = [flexSpace, saveButton, flexSpace, trashButton, flexSpace]
+
     }
 }
