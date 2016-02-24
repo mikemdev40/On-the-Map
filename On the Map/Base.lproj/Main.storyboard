@@ -469,6 +469,7 @@
                         <outlet property="locationTextField" destination="f0B-rW-vFc" id="Q1h-2v-rmq"/>
                         <outlet property="mapView" destination="92C-c7-VvG" id="daT-rh-gnH"/>
                         <outlet property="spinner" destination="mMS-Sq-oH0" id="GhR-eh-yAT"/>
+                        <outlet property="urlTextField" destination="nDz-kb-WNl" id="76C-uc-cFo"/>
                         <outlet property="whatIsYourLocationView" destination="OpQ-ru-o13" id="rgd-Lh-5Ph"/>
                     </connections>
                 </viewController>

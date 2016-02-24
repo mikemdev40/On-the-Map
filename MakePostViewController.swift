@@ -30,6 +30,16 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
             locationTextField.textAlignment = .Center
         }
     }
+    @IBOutlet weak var urlTextField: UITextField! {
+        didSet {
+            urlTextField.delegate = self
+            urlTextField.autocorrectionType = .No
+            urlTextField.enablesReturnKeyAutomatically = true
+            urlTextField.clearButtonMode = .WhileEditing
+            urlTextField.textAlignment = .Center
+            urlTextField.tag = 10
+        }
+    }
     
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
@@ -50,6 +60,11 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     }
     
     let blurView = UIVisualEffectView()
+    var saveLocationButton: UIBarButtonItem!
+    var savePostButton: UIBarButtonItem!
+    var trashButton: UIBarButtonItem!
+    var flexSpace: UIBarButtonItem!
+    var currentViewDisplayed: UIView?
     
     //use of a lazily initialized variable, as an alternative to setting the properties of the location manager in the viewDidLoad; although both methods accomplish the same thing - a location manager with relevant properties set before it is used elsewhere - i chose to use a lazy property just for practice of another method
     lazy var locationManager: CLLocationManager = {
@@ -81,13 +96,6 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
             locationManager.requestLocation()
         default:
             displayErrorAlert("Location services disabled", message: "Please re-enable location services in Settings for this app to use this feature!", handler: nil)
-        }
-    }
-    
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == .AuthorizedWhenInUse {
-            displayBlurEffect(true)
-            locationManager.requestLocation()
         }
     }
     
@@ -158,18 +166,21 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         }
     }
     
-    func hideSaveCancelToolbar(show: Bool) {
-        navigationController?.setToolbarHidden(show, animated: true)
-    }
-    
     func saveLocation() {
         swapViews(.URLtoShareView)
+        hideSaveCancelToolbar(true)
+    }
+    
+    func savePost() {
+        //TO DO:  SAVE ANNOTATION TO PARSE, CODE BELOW IN THE COMPLETION HANDLER
     }
     
     func cancelPost() {
-        swapViews(.LocationSelectionView)
-        //mapView.removeAnnotations(mapView.annotations)
-        //hideSaveCancelToolbar(true)
+        mapView.removeAnnotations(mapView.annotations)
+        hideSaveCancelToolbar(true)
+        if currentViewDisplayed === enterURLToShareView {
+            swapViews(.LocationSelectionView)
+        }
     }
     
     func swapViews(viewToShow: ViewToDisplay) {
@@ -178,15 +189,18 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
             UIView.animateWithDuration(0.5, animations: {
                 self.enterURLToShareView.alpha = 0.0
                 self.whatIsYourLocationView.alpha = 1.0
-                }, completion: { (succes) in
-                    
+                self.currentViewDisplayed = self.whatIsYourLocationView
+            }, completion: { [unowned self] (succes) in
+                self.toolbarItems?[1] = self.saveLocationButton
             })
         case .URLtoShareView:
             UIView.animateWithDuration(0.5, animations: {
-                    self.whatIsYourLocationView.alpha = 0.0
-                    self.enterURLToShareView.alpha = 1.0
-                }, completion: { (succes) in
-                    
+                self.whatIsYourLocationView.alpha = 0.0
+                self.enterURLToShareView.alpha = 1.0
+                self.urlTextField.becomeFirstResponder()
+                self.currentViewDisplayed = self.enterURLToShareView
+            }, completion: { [unowned self] (succes) in
+                self.toolbarItems?[1] = self.savePostButton
             })
         }
     }
@@ -205,6 +219,11 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         }
     }
     
+    
+    func hideSaveCancelToolbar(show: Bool) {
+        navigationController?.setToolbarHidden(show, animated: true)
+    }
+    
     func displayErrorAlert(title: String, message: String, handler: ((UIAlertAction) -> Void)?) {
         let ac = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: handler))
@@ -218,6 +237,23 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        if textField.tag == 10 {
+            if !urlTextField.text!.isEmpty {
+                hideSaveCancelToolbar(false)
+            } else {
+                hideSaveCancelToolbar(true)
+            }
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedWhenInUse {
+            displayBlurEffect(true)
+            locationManager.requestLocation()
+        }
     }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -270,10 +306,11 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancel")
         navigationItem.leftBarButtonItem = cancelButton
         
-        let saveButton = UIBarButtonItem(title: "Use Location", style: .Plain, target: self, action: "saveLocation")
-        let trashButton = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "cancelPost")
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-        toolbarItems = [flexSpace, saveButton, flexSpace, trashButton, flexSpace]
+        savePostButton = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "savePost")
+        saveLocationButton = UIBarButtonItem(title: "Use Location", style: .Plain, target: self, action: "saveLocation")
+        trashButton = UIBarButtonItem(title: "Reset", style: .Plain, target: self, action: "cancelPost")
+        flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+        toolbarItems = [flexSpace, saveLocationButton, flexSpace, trashButton, flexSpace]
 
         enterURLToShareView.alpha = 0.0
     }
