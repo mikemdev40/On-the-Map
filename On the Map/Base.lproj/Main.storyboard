@@ -314,33 +314,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OpQ-ru-o13">
+                            <view contentMode="scaleToFill" verticalHuggingPriority="501" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OpQ-ru-o13">
                                 <rect key="frame" x="0.0" y="64" width="600" height="182"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="DSK-Vp-k06">
-                                        <rect key="frame" x="20" y="15" width="560" height="152"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="DSK-Vp-k06">
+                                        <rect key="frame" x="20" y="15" width="560" height="142"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is your location?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wmh-Uw-ISx">
-                                                <rect key="frame" x="178" y="0.0" width="204" height="32"/>
+                                                <rect key="frame" x="178" y="0.0" width="204" height="26"/>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="20"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter location or tap &quot;Use Current Location&quot;" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f0B-rW-vFc">
-                                                <rect key="frame" x="0.0" y="40" width="560" height="32"/>
-                                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
+                                                <rect key="frame" x="0.0" y="31" width="560" height="37"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="37" id="Qfy-zh-xE2"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="83g-5q-6h1">
-                                                <rect key="frame" x="221" y="80" width="119" height="32"/>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="83g-5q-6h1">
+                                                <rect key="frame" x="253" y="73" width="55" height="32"/>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
-                                                <state key="normal" title="Find on the Map!"/>
+                                                <state key="normal" title="SUBMIT"/>
                                                 <connections>
                                                     <action selector="findOnTheMap:" destination="HVk-Bl-hfl" eventType="touchUpInside" id="IzB-wD-ENF"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iuz-B6-njW">
-                                                <rect key="frame" x="209" y="120" width="143" height="32"/>
+                                                <rect key="frame" x="209" y="110" width="143" height="32"/>
                                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
                                                 <state key="normal" title="Use Current Location"/>
                                                 <connections>
@@ -355,10 +358,10 @@
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="DSK-Vp-k06" firstAttribute="top" secondItem="OpQ-ru-o13" secondAttribute="top" constant="15" id="71d-34-EUp"/>
+                                    <constraint firstItem="DSK-Vp-k06" firstAttribute="top" secondItem="OpQ-ru-o13" secondAttribute="top" constant="10" id="71d-34-EUp"/>
                                     <constraint firstAttribute="bottom" secondItem="DSK-Vp-k06" secondAttribute="bottom" id="FLr-FR-Rbm"/>
                                     <constraint firstAttribute="height" constant="200" id="Unu-vO-M7P"/>
-                                    <constraint firstAttribute="bottom" secondItem="DSK-Vp-k06" secondAttribute="bottom" constant="15" id="nBX-Wy-H91"/>
+                                    <constraint firstAttribute="bottom" secondItem="DSK-Vp-k06" secondAttribute="bottom" constant="10" id="nBX-Wy-H91"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -367,28 +370,83 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="92C-c7-VvG">
+                            <view contentMode="scaleToFill" verticalHuggingPriority="501" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rmy-aA-PpQ">
+                                <rect key="frame" x="0.0" y="64" width="600" height="182"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="501" misplaced="YES" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="iJQ-xe-OSj">
+                                        <rect key="frame" x="20" y="47" width="560" height="68"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter URL to share:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rT0-oe-Ynh">
+                                                <rect key="frame" x="193" y="0.0" width="174" height="26"/>
+                                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="20"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter URL" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nDz-kb-WNl">
+                                                <rect key="frame" x="0.0" y="31" width="560" height="37"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="1NE-Mt-m2Z"/>
+                                                    <constraint firstAttribute="height" constant="37" id="leb-LF-WWD"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="1NE-Mt-m2Z"/>
+                                                    </mask>
+                                                </variation>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="nDz-kb-WNl" firstAttribute="width" secondItem="iJQ-xe-OSj" secondAttribute="width" id="azV-3i-lfs"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="1" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="iJQ-xe-OSj" firstAttribute="top" secondItem="rmy-aA-PpQ" secondAttribute="top" constant="8" id="EKQ-LI-rFJ"/>
+                                    <constraint firstItem="iJQ-xe-OSj" firstAttribute="centerX" secondItem="rmy-aA-PpQ" secondAttribute="centerX" id="MAS-13-u5v"/>
+                                    <constraint firstItem="iJQ-xe-OSj" firstAttribute="centerY" secondItem="rmy-aA-PpQ" secondAttribute="centerY" id="Q9S-XD-wTh"/>
+                                    <constraint firstAttribute="bottom" secondItem="iJQ-xe-OSj" secondAttribute="bottom" constant="8" id="Uow-uF-vfo"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="182" id="dwI-S3-Vei"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="EKQ-LI-rFJ"/>
+                                        <exclude reference="Uow-uF-vfo"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="92C-c7-VvG">
                                 <rect key="frame" x="0.0" y="246" width="600" height="354"/>
                             </mapView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="mMS-Sq-oH0">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="mMS-Sq-oH0">
                                 <rect key="frame" x="290" y="413" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="iJQ-xe-OSj" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leadingMargin" id="278-NP-0Pe"/>
                             <constraint firstItem="92C-c7-VvG" firstAttribute="top" secondItem="OpQ-ru-o13" secondAttribute="bottom" id="4ZM-iK-UPv"/>
                             <constraint firstItem="DSK-Vp-k06" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leadingMargin" id="6KR-7H-LRt"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iJQ-xe-OSj" secondAttribute="trailing" id="Dcu-0f-44U"/>
                             <constraint firstAttribute="trailingMargin" secondItem="OpQ-ru-o13" secondAttribute="trailing" constant="-20" id="EEl-KB-Fd3"/>
+                            <constraint firstItem="rmy-aA-PpQ" firstAttribute="centerY" secondItem="OpQ-ru-o13" secondAttribute="centerY" id="F7Y-IU-wly"/>
                             <constraint firstItem="mMS-Sq-oH0" firstAttribute="centerY" secondItem="92C-c7-VvG" secondAttribute="centerY" id="HHV-u9-fYC"/>
+                            <constraint firstItem="rmy-aA-PpQ" firstAttribute="width" secondItem="OpQ-ru-o13" secondAttribute="width" id="LH9-M3-RIC"/>
+                            <constraint firstItem="nDz-kb-WNl" firstAttribute="height" secondItem="f0B-rW-vFc" secondAttribute="height" id="NUT-Gp-7V3"/>
                             <constraint firstItem="DSK-Vp-k06" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leadingMargin" constant="-12" id="NgA-1C-pby"/>
                             <constraint firstItem="NCe-dK-MWa" firstAttribute="top" secondItem="92C-c7-VvG" secondAttribute="bottom" id="PME-CQ-7gh"/>
+                            <constraint firstItem="nDz-kb-WNl" firstAttribute="height" secondItem="f0B-rW-vFc" secondAttribute="height" id="VTQ-UE-98q"/>
                             <constraint firstAttribute="trailing" secondItem="92C-c7-VvG" secondAttribute="trailing" id="ZJi-9h-EQp"/>
                             <constraint firstItem="OpQ-ru-o13" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leadingMargin" constant="-20" id="aXC-nW-xGW"/>
                             <constraint firstItem="92C-c7-VvG" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leading" id="cDR-Pa-nbz"/>
                             <constraint firstItem="DSK-Vp-k06" firstAttribute="top" secondItem="XM6-te-PZF" secondAttribute="bottom" constant="10" id="dyb-Lp-1tl"/>
                             <constraint firstAttribute="trailingMargin" secondItem="OpQ-ru-o13" secondAttribute="trailing" constant="-20" id="f3A-BU-JzY"/>
                             <constraint firstAttribute="trailingMargin" secondItem="DSK-Vp-k06" secondAttribute="trailing" id="hDX-zo-XM2"/>
+                            <constraint firstItem="rmy-aA-PpQ" firstAttribute="centerX" secondItem="OpQ-ru-o13" secondAttribute="centerX" id="iwZ-Dz-anP"/>
                             <constraint firstItem="OpQ-ru-o13" firstAttribute="top" secondItem="XM6-te-PZF" secondAttribute="bottom" id="qKT-mL-ndo"/>
+                            <constraint firstItem="rmy-aA-PpQ" firstAttribute="height" secondItem="OpQ-ru-o13" secondAttribute="height" id="srS-EK-Ehq"/>
                             <constraint firstItem="OpQ-ru-o13" firstAttribute="top" secondItem="XM6-te-PZF" secondAttribute="bottom" constant="-20" id="t7t-d5-C2c"/>
                             <constraint firstItem="OpQ-ru-o13" firstAttribute="leading" secondItem="L2s-rG-CJ8" secondAttribute="leadingMargin" constant="-20" id="uHx-g8-Jqg"/>
                             <constraint firstItem="mMS-Sq-oH0" firstAttribute="centerX" secondItem="92C-c7-VvG" secondAttribute="centerX" id="yfU-UQ-YPC"/>
@@ -400,14 +458,18 @@
                                 <exclude reference="uHx-g8-Jqg"/>
                                 <exclude reference="NgA-1C-pby"/>
                                 <exclude reference="dyb-Lp-1tl"/>
+                                <exclude reference="NUT-Gp-7V3"/>
+                                <exclude reference="VTQ-UE-98q"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="AeD-yB-R9x"/>
                     <connections>
+                        <outlet property="enterURLToShareView" destination="rmy-aA-PpQ" id="MeQ-SP-zHa"/>
                         <outlet property="locationTextField" destination="f0B-rW-vFc" id="Q1h-2v-rmq"/>
                         <outlet property="mapView" destination="92C-c7-VvG" id="daT-rh-gnH"/>
                         <outlet property="spinner" destination="mMS-Sq-oH0" id="GhR-eh-yAT"/>
+                        <outlet property="whatIsYourLocationView" destination="OpQ-ru-o13" id="rgd-Lh-5Ph"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wQT-Zg-Ko4" userLabel="First Responder" sceneMemberID="firstResponder"/>

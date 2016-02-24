@@ -17,6 +17,10 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         static let longitudeDelta: CLLocationDegrees = 0.05
     }
     
+    enum ViewToDisplay {
+        case LocationSelectionView, URLtoShareView
+    }
+    
     @IBOutlet weak var locationTextField: UITextField! {
         didSet {
             locationTextField.delegate = self
@@ -35,6 +39,9 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
             mapView.userTrackingMode = .None
         }
     }
+    
+    @IBOutlet weak var enterURLToShareView: UIView!
+    @IBOutlet weak var whatIsYourLocationView: UIView!
     
     @IBOutlet weak var spinner: UIActivityIndicatorView! {
         didSet {
@@ -63,7 +70,6 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     }
     
     @IBAction func useCurrentLocation(sender: UIButton) {
-        
         switch CLLocationManager.authorizationStatus() {
         case .NotDetermined:
             locationManager.requestWhenInUseAuthorization()
@@ -156,13 +162,33 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         navigationController?.setToolbarHidden(show, animated: true)
     }
     
-    func savePost() {
-        
+    func saveLocation() {
+        swapViews(.URLtoShareView)
     }
     
     func cancelPost() {
-        mapView.removeAnnotations(mapView.annotations)
-        hideSaveCancelToolbar(true)
+        swapViews(.LocationSelectionView)
+        //mapView.removeAnnotations(mapView.annotations)
+        //hideSaveCancelToolbar(true)
+    }
+    
+    func swapViews(viewToShow: ViewToDisplay) {
+        switch viewToShow {
+        case .LocationSelectionView:
+            UIView.animateWithDuration(0.5, animations: {
+                self.enterURLToShareView.alpha = 0.0
+                self.whatIsYourLocationView.alpha = 1.0
+                }, completion: { (succes) in
+                    
+            })
+        case .URLtoShareView:
+            UIView.animateWithDuration(0.5, animations: {
+                    self.whatIsYourLocationView.alpha = 0.0
+                    self.enterURLToShareView.alpha = 1.0
+                }, completion: { (succes) in
+                    
+            })
+        }
     }
     
     func displayBlurEffect(enable: Bool) {
@@ -244,10 +270,11 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancel")
         navigationItem.leftBarButtonItem = cancelButton
         
-        let saveButton = UIBarButtonItem(title: "Use Location", style: .Plain, target: self, action: "savePost")
+        let saveButton = UIBarButtonItem(title: "Use Location", style: .Plain, target: self, action: "saveLocation")
         let trashButton = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "cancelPost")
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
         toolbarItems = [flexSpace, saveButton, flexSpace, trashButton, flexSpace]
 
+        enterURLToShareView.alpha = 0.0
     }
 }
