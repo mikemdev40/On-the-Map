@@ -67,15 +67,43 @@ class Client {
         task.resume()
     }
     
-    class func getUdacityUserInfo(completionHandler: (success: Bool, error: String?) ->  Void) {
+    class func getUdacitySession(data: NSData?, response: NSURLResponse?, error: NSError?, completionHandler: (success: Bool, error: String?) -> Void) {
+        if error != nil {
+            completionHandler(success: false, error: error?.localizedDescription)
+            
+        } else {
+            guard let data = data else {
+                completionHandler(success: false, error: "There was an error getting the data.")
+                return
+            }
+            let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+            guard let parsedData = parseData(newData) else {
+                completionHandler(success: false, error: "There was an error converting the data.")
+                return
+            }
+            guard let udacityAccount = parsedData["account"] as? NSDictionary, udacitySession = parsedData["session"] as? NSDictionary else {
+                let error = parsedData["error"] as? String
+                completionHandler(success: false, error: error)
+                return
+            }
+            guard let key = udacityAccount["key"] as? String, sessionID = udacitySession["id"] as? String else {
+                completionHandler(success: false, error: "There was an error.")
+                return
+            }
+            
+            Client.udacityUserID = key
+            Client.udacitySessionID = sessionID
+            self.getUdacityUserInfo(completionHandler)
+        }
+    }
     
+    class func getUdacityUserInfo(completionHandler: (success: Bool, error: String?) ->  Void) {
         let url = Constants.udacityUserInfoURL + Client.udacityUserID!
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
         request.HTTPMethod = "GET"
     
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) {data, response, error in
-            
             if error != nil {
                 completionHandler(success: false, error: error?.localizedDescription)
                 
@@ -109,10 +137,10 @@ class Client {
         request.addValue(Constants.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.RESTAPIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         let session = NSURLSession.sharedSession()
+        
         let task = session.dataTaskWithRequest(request) { data, response, error in
             if error != nil {
                 completionHandler(success: false, error: error?.localizedDescription, results: nil)
-        
             } else {
                 guard let data = data else {
                     completionHandler(success: false, error: "There was an error getting the data.", results: nil)
@@ -130,6 +158,46 @@ class Client {
             }
         }
         task.resume()
+    }
+    
+    class func makePost(mapString: String, mediaURL: String, latitude: Double, longitude: Double, completionHandler: (success: Bool, error: String?) ->  Void) {
+        guard let udacityUserID = udacityUserID, let userFirstName = userFirstName, let userLastName = userLastName else {
+            completionHandler(success: false, error: "There was an issue with the logged in user's data.")
+            return
+        }
+        
+        let request = NSMutableURLRequest(URL: NSURL(string: Constants.parseStudentLocationsURL)!)
+        request.addValue(Constants.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(Constants.RESTAPIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.HTTPMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        var json = [String: AnyObject]()
+        json = ["uniqueKey": udacityUserID, "firstName": userFirstName, "lastName": userLastName, "mapString": mapString, "mediaURL": mediaURL, "latitude": latitude, "longitude": longitude]
+        
+        request.HTTPBody = getJSONForHTTPBody(json)
+        
+        //request.HTTPBody = "{\"uniqueKey\": \"1234\", \"firstName\": \"John\", \"lastName\": \"Doe\",\"mapString\": \"Mountain View, CA\", \"mediaURL\": \"https://udacity.com\",\"latitude\": 37.386052, \"longitude\": -122.083851}".dataUsingEncoding(NSUTF8StringEncoding)
+
+        print(request.HTTPBody)
+        completionHandler(success: true, error: nil)
+//        let session = NSURLSession.sharedSession()
+//        let task = session.dataTaskWithRequest(request) { data, response, error in
+//            if error != nil {
+//                completionHandler(success: false, error: error?.localizedDescription)
+//            } else {
+//                completionHandler(success: true, error: nil)
+//            }
+//        }
+//        task.resume()
+    }
+    
+    class func deletePost() {
+        
+    }
+    
+    class func updatePost() {
+    
     }
     
     class func logoutOfUdacity(completionHandler: (success: Bool, error: String?) ->  Void) {
@@ -156,36 +224,6 @@ class Client {
     
     class func logoutOfFacebook() {
         Client.facebookManager.logOut()
-    }
-    
-    class func getUdacitySession(data: NSData?, response: NSURLResponse?, error: NSError?, completionHandler: (success: Bool, error: String?) -> Void) {
-        if error != nil {
-            completionHandler(success: false, error: error?.localizedDescription)
-            
-        } else {
-            guard let data = data else {
-                completionHandler(success: false, error: "There was an error getting the data.")
-                return
-            }
-            let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
-            guard let parsedData = parseData(newData) else {
-                completionHandler(success: false, error: "There was an error converting the data.")
-                return
-            }
-            guard let udacityAccount = parsedData["account"] as? NSDictionary, udacitySession = parsedData["session"] as? NSDictionary else {
-                let error = parsedData["error"] as? String
-                completionHandler(success: false, error: error)
-                return
-            }
-            guard let key = udacityAccount["key"] as? String, sessionID = udacitySession["id"] as? String else {
-                completionHandler(success: false, error: "There was an error.")
-                return
-            }
-            
-            Client.udacityUserID = key
-            Client.udacitySessionID = sessionID
-            self.getUdacityUserInfo(completionHandler)
-        }
     }
     
     class func parseData(dataToParse: NSData) -> NSDictionary? {

@@ -65,7 +65,7 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     var trashButton: UIBarButtonItem!
     var flexSpace: UIBarButtonItem!
     var currentViewDisplayed: UIView?
-    
+
     //use of a lazily initialized variable, as an alternative to setting the properties of the location manager in the viewDidLoad; although both methods accomplish the same thing - a location manager with relevant properties set before it is used elsewhere - i chose to use a lazy property just for practice of another method
     lazy var locationManager: CLLocationManager = {
         let lazyLocationManager = CLLocationManager()
@@ -76,7 +76,7 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     
     @IBAction func findOnTheMap(sender: UIButton) {
         if locationTextField.text!.isEmpty {
-            displayErrorAlert("Empty location!", message: "Please enter a location.", handler: nil)
+            displayErrorAlert("Empty location", message: "Please enter a location.", handler: nil)
             locationTextField.resignFirstResponder()
         } else {
             getLocationFromEntry(locationTextField.text!)
@@ -137,6 +137,10 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
                 placemarkComponents.append(country)
             }
             
+            if placemarkComponents.count == 4 {
+                placemarkComponents.removeLast()
+            }
+            
             let placemarkInfo = placemarkComponents.joinWithSeparator(", ")
             annotation.subtitle = placemarkInfo
             
@@ -149,8 +153,12 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
                 }
                 if let state = placemark.administrativeArea {
                     titleString.append(state)
-                } else if let country = placemark.country {
+                }
+                if let country = placemark.country {
                     titleString.append(country)
+                }
+                if titleString.count == 3 {
+                    titleString.removeLast()
                 }
                 let titleInfo = titleString.joinWithSeparator(", ")
                 annotation.title = titleInfo
@@ -172,7 +180,28 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     }
     
     func savePost() {
-        //TO DO:  SAVE ANNOTATION TO PARSE, CODE BELOW IN THE COMPLETION HANDLER
+        
+        guard let mediaURL = urlTextField.text else {
+            displayErrorAlert("No URL", message: "Please enter a URL!", handler: nil)
+            return
+        }
+        guard mapView.annotations.count > 0 else {
+            displayErrorAlert("No Location", message: "No location to save.", handler: nil)
+            return
+        }
+        
+        let annotation = mapView.annotations[0]
+        if let title = annotation.title, let mapString = title  {
+            Client.makePost(mapString, mediaURL: mediaURL, latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude, completionHandler: { (success, error) in
+                if let error = error {
+                    self.displayErrorAlert("Error Posting", message: error, handler: nil)
+                } else {
+                    self.displayErrorAlert("Post Successful", message: "The post was saved!", handler: { (alertAction) in
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    })
+                }
+            })
+        }
     }
     
     func cancelPost() {
