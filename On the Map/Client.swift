@@ -179,7 +179,7 @@ class Client {
         
         //request.HTTPBody = "{\"uniqueKey\": \"1234\", \"firstName\": \"John\", \"lastName\": \"Doe\",\"mapString\": \"Mountain View, CA\", \"mediaURL\": \"https://udacity.com\",\"latitude\": 37.386052, \"longitude\": -122.083851}".dataUsingEncoding(NSUTF8StringEncoding)
 
-        print(request.HTTPBody)
+        print(json)
         completionHandler(success: true, error: nil)
 //        let session = NSURLSession.sharedSession()
 //        let task = session.dataTaskWithRequest(request) { data, response, error in

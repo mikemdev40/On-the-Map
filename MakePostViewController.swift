@@ -23,20 +23,12 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     
     @IBOutlet weak var locationTextField: UITextField! {
         didSet {
-            locationTextField.delegate = self
-            locationTextField.autocorrectionType = .No
-            locationTextField.enablesReturnKeyAutomatically = true
-            locationTextField.clearButtonMode = .WhileEditing
-            locationTextField.textAlignment = .Center
+            setupButons(locationTextField)
         }
     }
     @IBOutlet weak var urlTextField: UITextField! {
         didSet {
-            urlTextField.delegate = self
-            urlTextField.autocorrectionType = .No
-            urlTextField.enablesReturnKeyAutomatically = true
-            urlTextField.clearButtonMode = .WhileEditing
-            urlTextField.textAlignment = .Center
+            setupButons(urlTextField)
             urlTextField.tag = 10
         }
     }
@@ -263,19 +255,12 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func textFieldDidEndEditing(textField: UITextField) {
-        if textField.tag == 10 {
-            if !urlTextField.text!.isEmpty {
-                hideSaveCancelToolbar(false)
-            } else {
-                hideSaveCancelToolbar(true)
-            }
-        }
+    func setupButons(textField: UITextField) {
+        textField.delegate = self
+        textField.autocorrectionType = .No
+        textField.enablesReturnKeyAutomatically = true
+        textField.clearButtonMode = .WhileEditing
+        textField.textAlignment = .Center
     }
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
@@ -316,6 +301,21 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
             pin?.annotation = annotation
         }
         return pin
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        if textField.tag == 10 {
+            if !urlTextField.text!.isEmpty {
+                hideSaveCancelToolbar(false)
+            } else {
+                hideSaveCancelToolbar(true)
+            }
+        }
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
