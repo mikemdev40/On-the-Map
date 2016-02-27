@@ -56,6 +56,11 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
         presentViewController(ac, animated: true, completion: nil)
     }
     
+    //gets invoked by the tab view controller's edit button
+    override func setEditing(editing: Bool, animated: Bool) {
+        tableView.setEditing(editing, animated: true)
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell") as! PostTableViewCell
         let postToShow = StudentPosts.sharedInstance.posts[indexPath.row]
@@ -101,6 +106,6 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
         refresher.addTarget(self, action: "refresh", forControlEvents: .ValueChanged)
         refresher.attributedTitle = NSAttributedString(string: "Retrieving updated posts!")
         //tableView.addSubview(refresher)
-        tableView.insertSubview(refresher, atIndex: 0)   //"addSubview" results in the refresher being visible through the tableview for a split second when the refresher ends refreshing, but using "insertUbview" prevents that, per http://stackoverflow.com/questions/12497940/uirefreshcontrol-without-uitableviewcontroller?lq=1
+        tableView.insertSubview(refresher, atIndex: 0)   //using the addSubview method on the table view results in the refresher being visible through the tableview for a split second when the refresher ends refreshing, but using the insertSubview method prevents that, per http://stackoverflow.com/questions/12497940/uirefreshcontrol-without-uitableviewcontroller?lq=1
     }
 }
