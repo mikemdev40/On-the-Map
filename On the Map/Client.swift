@@ -58,7 +58,6 @@ class Client {
         let json = ["facebook_mobile": ["access_token": facebookAccessTokenString]]
         
         request.HTTPBody = getJSONForHTTPBody(json)
-        //note: i decided to write a more generic method that creates a JSON HTTP body from a dictionary, rather than using a string that has the hard-coded structure; doing this was equivalent to: request.HTTPBody = "{\"udacity\": {\"username\": \"EMAIL", \"password\": \"PASSWORD\"}}".dataUsingEncoding(NSUTF8StringEncoding)
         
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { data, response, error in
@@ -177,19 +176,17 @@ class Client {
         
         request.HTTPBody = getJSONForHTTPBody(json)
         
-        //request.HTTPBody = "{\"uniqueKey\": \"1234\", \"firstName\": \"John\", \"lastName\": \"Doe\",\"mapString\": \"Mountain View, CA\", \"mediaURL\": \"https://udacity.com\",\"latitude\": 37.386052, \"longitude\": -122.083851}".dataUsingEncoding(NSUTF8StringEncoding)
+        //similar to above, i used a more generic method that creates a JSON HTTP body from a dictionary, rather than using a string that has the hard-coded structure; doing this was equivalent to: request.HTTPBody = "{\"uniqueKey\": \"1234\", \"firstName\": \"John\", \"lastName\": \"Doe\",\"mapString\": \"Mountain View, CA\", \"mediaURL\": \"https://udacity.com\",\"latitude\": 37.386052, \"longitude\": -122.083851}".dataUsingEncoding(NSUTF8StringEncoding)
 
-        print(json)
-        completionHandler(success: true, error: nil)
-//        let session = NSURLSession.sharedSession()
-//        let task = session.dataTaskWithRequest(request) { data, response, error in
-//            if error != nil {
-//                completionHandler(success: false, error: error?.localizedDescription)
-//            } else {
-//                completionHandler(success: true, error: nil)
-//            }
-//        }
-//        task.resume()
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            if error != nil {
+                completionHandler(success: false, error: error?.localizedDescription)
+            } else {
+                completionHandler(success: true, error: nil)
+            }
+        }
+        task.resume()
     }
     
     class func deletePost() {
