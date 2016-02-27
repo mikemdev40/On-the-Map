@@ -15,6 +15,7 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     struct Constants {
         static let openPostViewSegue = "SegueFromMapToPost"
     }
+    
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
             mapView.delegate = self
@@ -31,15 +32,15 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         StudentPosts.clearPosts()
         Client.retrieveStudentInformation { (success, error, results) in
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            if error != nil {
-                self.displayLoginErrorAlert("Error", message: error!, handler: nil)
-            } else if let results = results {
-                StudentPosts.generatePostsFromData(results)
-                dispatch_async(dispatch_get_main_queue(), {
+            dispatch_async(dispatch_get_main_queue(), {
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                if error != nil {
+                    self.displayLoginErrorAlert("Error", message: error!, handler: nil)
+                } else if let results = results {
+                    StudentPosts.generatePostsFromData(results)
                     self.createAndAddAnnotations()
-                })
-            }
+                }
+            })
         }
     }
     
@@ -102,6 +103,20 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
                     }
                 }
             }
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if Client.didDeleteItem {
+            refresh()
+            Client.didDeleteItem = false
+        }
+        
+        if Client.didPostItem.1 {
+            refresh()
+            Client.didPostItem.1 = false
         }
     }
     

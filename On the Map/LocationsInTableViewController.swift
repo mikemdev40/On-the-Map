@@ -74,6 +74,33 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
         
     }
     
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        let postUserId = StudentPosts.sharedInstance.posts[indexPath.row].uniqueKey
+        
+        if postUserId == Client.udacityUserID {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            
+            let objectIdToDelete = StudentPosts.sharedInstance.posts[indexPath.row].objectID
+            
+            Client.deletePost(objectIdToDelete, completionHandler: { [unowned self] (success, error) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    if let error = error {
+                        self.displayLoginErrorAlert("Error", message: error, handler: nil)
+                    } else {
+                        self.refresh()
+                    }
+                })
+            })
+        }
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         let mediaURL = StudentPosts.sharedInstance.posts[indexPath.row].mediaURL
@@ -98,6 +125,15 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
     func getDateFromString(dateStringToConvert: String) -> String {
         let newString = dateStringToConvert.substringToIndex(dateStringToConvert.startIndex.advancedBy(10))
         return newString
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if Client.didPostItem.0 {
+            refresh()
+            Client.didPostItem.0 = false
+        }
     }
     
     override func viewDidLoad() {

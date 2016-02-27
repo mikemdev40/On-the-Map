@@ -185,13 +185,15 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         let annotation = mapView.annotations[0]
         if let title = annotation.title, let mapString = title  {
             Client.makePost(mapString, mediaURL: mediaURL, latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude, completionHandler: { (success, error) in
-                if let error = error {
-                    self.displayErrorAlert("Error Posting", message: error, handler: nil)
-                } else {
-                    self.displayErrorAlert("Post Successful", message: "The post was saved!", handler: { (alertAction) in
-                        self.dismissViewControllerAnimated(true, completion: nil)
-                    })
-                }
+                dispatch_async(dispatch_get_main_queue(), {
+                    if let error = error {
+                        self.displayErrorAlert("Error Posting", message: error, handler: nil)
+                    } else {
+                        self.displayErrorAlert("Post Successful", message: "The post was saved!", handler: { (alertAction) in
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                        })
+                    }
+                })
             })
         }
     }

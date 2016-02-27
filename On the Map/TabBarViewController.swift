@@ -16,7 +16,7 @@ class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
     var postButton: UIBarButtonItem!
     var editButton: UIBarButtonItem!
     var flexibleSpace: UIBarButtonItem!
-    
+        
     func logout() {
         spinner?.stopAnimating()
         
