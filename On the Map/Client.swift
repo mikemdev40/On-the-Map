@@ -15,7 +15,7 @@ class Client {
     struct Constants {
         static let udacitySessionURL = "https://www.udacity.com/api/session"
         static let udacityUserInfoURL = "https://www.udacity.com/api/users/"
-        static let parseStudentLocationsURL = "https://api.parse.com/1/classes/StudentLocation"
+        static let parseStudentLocationsURL = "https://api.parse.com/1/classes/StudentLocation/"
         static let parseApplicationID = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
         static let RESTAPIKey = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
     }
@@ -28,6 +28,8 @@ class Client {
     static var facebookToken: FBSDKAccessToken? {
         return FBSDKAccessToken.currentAccessToken()
     }
+    static var didDeleteItem = false
+    static var didPostItem = (false, false)
     
     class func createUdacitySession(username username: String, password: String, completionHandler: (success: Bool, error: String?) -> Void) {
         
@@ -183,18 +185,48 @@ class Client {
             if error != nil {
                 completionHandler(success: false, error: error?.localizedDescription)
             } else {
+                didPostItem = (true, true)
                 completionHandler(success: true, error: nil)
             }
         }
         task.resume()
     }
     
-    class func deletePost() {
+    class func deletePost(objectId: String, completionHandler: (success: Bool, error: String?) ->  Void) {
         
-    }
-    
-    class func updatePost() {
-    
+        let url = Constants.parseStudentLocationsURL + objectId
+        
+        let request = NSMutableURLRequest(URL: NSURL(string: url)!)
+        request.addValue(Constants.parseApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue(Constants.RESTAPIKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.HTTPMethod = "DELETE"
+        
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) { data, response, error in
+            if error != nil {
+                completionHandler(success: false, error: error?.localizedDescription)
+            } else {
+                var errorMessage: String? = nil
+                if let data = data {
+                    if let parsedData = parseData(data) {
+                        errorMessage = parsedData["error"] as? String
+                    }
+                }
+                
+                guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                    if let errorString = errorMessage {
+                        completionHandler(success: false, error: errorString)
+                    } else {
+                        completionHandler(success: false, error: "There was an error deleting the object.")
+                    }
+                    return
+                }
+                
+                didDeleteItem = true
+                completionHandler(success: true, error: nil)
+            }
+        }
+        task.resume()
     }
     
     class func logoutOfUdacity(completionHandler: (success: Bool, error: String?) ->  Void) {

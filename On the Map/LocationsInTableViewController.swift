@@ -34,15 +34,13 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
         
         StudentPosts.clearPosts()
         Client.retrieveStudentInformation { (success, error, results) in
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            if error != nil {
-                dispatch_async(dispatch_get_main_queue()) {
+            dispatch_async(dispatch_get_main_queue()) {
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                if error != nil {
                     self.refresher.endRefreshing()
                     self.displayLoginErrorAlert("Error", message: error!, handler: nil)
-                }
-            } else if let results = results {
-                StudentPosts.generatePostsFromData(results)
-                dispatch_async(dispatch_get_main_queue()) {
+                } else if let results = results {
+                    StudentPosts.generatePostsFromData(results)
                     self.tableView.reloadData()
                     self.refresher.endRefreshing()
                 }
@@ -56,6 +54,11 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
         presentViewController(ac, animated: true, completion: nil)
     }
     
+    //gets invoked by the tab view controller's edit button
+    override func setEditing(editing: Bool, animated: Bool) {
+        tableView.setEditing(editing, animated: true)
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell") as! PostTableViewCell
         let postToShow = StudentPosts.sharedInstance.posts[indexPath.row]
@@ -67,6 +70,33 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
         
         return cell
         
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        let postUserId = StudentPosts.sharedInstance.posts[indexPath.row].uniqueKey
+        
+        if postUserId == Client.udacityUserID {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            
+            let objectIdToDelete = StudentPosts.sharedInstance.posts[indexPath.row].objectID
+            
+            Client.deletePost(objectIdToDelete, completionHandler: { [unowned self] (success, error) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    if let error = error {
+                        self.displayLoginErrorAlert("Error", message: error, handler: nil)
+                    } else {
+                        self.refresh()
+                    }
+                })
+            })
+        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -95,12 +125,21 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
         return newString
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if Client.didPostItem.1 {
+            refresh()
+            Client.didPostItem.1 = false
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         refresher.addTarget(self, action: "refresh", forControlEvents: .ValueChanged)
         refresher.attributedTitle = NSAttributedString(string: "Retrieving updated posts!")
         //tableView.addSubview(refresher)
-        tableView.insertSubview(refresher, atIndex: 0)   //"addSubview" results in the refresher being visible through the tableview for a split second when the refresher ends refreshing, but using "insertUbview" prevents that, per http://stackoverflow.com/questions/12497940/uirefreshcontrol-without-uitableviewcontroller?lq=1
+        tableView.insertSubview(refresher, atIndex: 0)   //using the addSubview method on the table view results in the refresher being visible through the tableview for a split second when the refresher ends refreshing, but using the insertSubview method prevents that, per http://stackoverflow.com/questions/12497940/uirefreshcontrol-without-uitableviewcontroller?lq=1
     }
 }

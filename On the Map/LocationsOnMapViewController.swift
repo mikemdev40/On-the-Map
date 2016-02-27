@@ -14,7 +14,10 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
 
     struct Constants {
         static let openPostViewSegue = "SegueFromMapToPost"
+        static let latitudeDelta: CLLocationDegrees = 0.2
+        static let longitudeDelta: CLLocationDegrees = 0.2
     }
+    
     @IBOutlet weak var mapView: MKMapView! {
         didSet {
             mapView.delegate = self
@@ -22,6 +25,8 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
             mapView.userTrackingMode = .None
         }
     }
+    
+    var annotationToZoomTo: PostAnnotation?
     
     func post() {
         performSegueWithIdentifier(Constants.openPostViewSegue, sender: self)
@@ -31,15 +36,16 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         StudentPosts.clearPosts()
         Client.retrieveStudentInformation { (success, error, results) in
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            if error != nil {
-                self.displayLoginErrorAlert("Error", message: error!, handler: nil)
-            } else if let results = results {
-                StudentPosts.generatePostsFromData(results)
-                dispatch_async(dispatch_get_main_queue(), {
+            dispatch_async(dispatch_get_main_queue(), {
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                if error != nil {
+                    self.displayLoginErrorAlert("Error", message: error!, handler: nil)
+                } else if let results = results {
+                    StudentPosts.generatePostsFromData(results)
                     self.createAndAddAnnotations()
-                })
-            }
+                }
+                Client.didPostItem.0 = false
+            })
         }
     }
     
@@ -51,7 +57,16 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
                 let annotation = PostAnnotation(studentInfo: studentInfo)
                 annotationsToAdd.append(annotation)
             }
+            annotationToZoomTo = annotationsToAdd[0]
             mapView.addAnnotations(annotationsToAdd)
+            
+            if Client.didPostItem.0 {
+                if let annotationToZoomTo = annotationToZoomTo {
+                    let region = MKCoordinateRegion(center: annotationToZoomTo.coordinate, span: MKCoordinateSpan(latitudeDelta: Constants.latitudeDelta, longitudeDelta: Constants.longitudeDelta))
+                    mapView.setRegion(region, animated: true)
+                    mapView.selectAnnotation(annotationToZoomTo, animated: true)
+                }
+            }
         }
     }
     
@@ -102,6 +117,19 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
                     }
                 }
             }
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if Client.didDeleteItem {
+            refresh()
+            Client.didDeleteItem = false
+        }
+        
+        if Client.didPostItem.0 {
+            refresh()
         }
     }
     
