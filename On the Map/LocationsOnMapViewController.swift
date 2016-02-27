@@ -14,8 +14,8 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
 
     struct Constants {
         static let openPostViewSegue = "SegueFromMapToPost"
-        static let latitudeDelta: CLLocationDegrees = 0.05
-        static let longitudeDelta: CLLocationDegrees = 0.05
+        static let latitudeDelta: CLLocationDegrees = 0.2
+        static let longitudeDelta: CLLocationDegrees = 0.2
     }
     
     @IBOutlet weak var mapView: MKMapView! {
