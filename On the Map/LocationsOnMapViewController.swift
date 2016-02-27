@@ -14,6 +14,8 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
 
     struct Constants {
         static let openPostViewSegue = "SegueFromMapToPost"
+        static let latitudeDelta: CLLocationDegrees = 0.05
+        static let longitudeDelta: CLLocationDegrees = 0.05
     }
     
     @IBOutlet weak var mapView: MKMapView! {
@@ -23,6 +25,8 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
             mapView.userTrackingMode = .None
         }
     }
+    
+    var annotationToZoomTo: PostAnnotation?
     
     func post() {
         performSegueWithIdentifier(Constants.openPostViewSegue, sender: self)
@@ -40,6 +44,7 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
                     StudentPosts.generatePostsFromData(results)
                     self.createAndAddAnnotations()
                 }
+                Client.didPostItem.0 = false
             })
         }
     }
@@ -52,7 +57,16 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
                 let annotation = PostAnnotation(studentInfo: studentInfo)
                 annotationsToAdd.append(annotation)
             }
+            annotationToZoomTo = annotationsToAdd[0]
             mapView.addAnnotations(annotationsToAdd)
+            
+            if Client.didPostItem.0 {
+                if let annotationToZoomTo = annotationToZoomTo {
+                    let region = MKCoordinateRegion(center: annotationToZoomTo.coordinate, span: MKCoordinateSpan(latitudeDelta: Constants.latitudeDelta, longitudeDelta: Constants.longitudeDelta))
+                    mapView.setRegion(region, animated: true)
+                    mapView.selectAnnotation(annotationToZoomTo, animated: true)
+                }
+            }
         }
     }
     
@@ -114,9 +128,8 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
             Client.didDeleteItem = false
         }
         
-        if Client.didPostItem.1 {
+        if Client.didPostItem.0 {
             refresh()
-            Client.didPostItem.1 = false
         }
     }
     

@@ -34,15 +34,13 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
         
         StudentPosts.clearPosts()
         Client.retrieveStudentInformation { (success, error, results) in
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            if error != nil {
-                dispatch_async(dispatch_get_main_queue()) {
+            dispatch_async(dispatch_get_main_queue()) {
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                if error != nil {
                     self.refresher.endRefreshing()
                     self.displayLoginErrorAlert("Error", message: error!, handler: nil)
-                }
-            } else if let results = results {
-                StudentPosts.generatePostsFromData(results)
-                dispatch_async(dispatch_get_main_queue()) {
+                } else if let results = results {
+                    StudentPosts.generatePostsFromData(results)
                     self.tableView.reloadData()
                     self.refresher.endRefreshing()
                 }
@@ -130,9 +128,9 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if Client.didPostItem.0 {
+        if Client.didPostItem.1 {
             refresh()
-            Client.didPostItem.0 = false
+            Client.didPostItem.1 = false
         }
     }
     

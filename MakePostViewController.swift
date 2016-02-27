@@ -324,6 +324,12 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
         view.endEditing(true)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        locationTextField.becomeFirstResponder()
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         

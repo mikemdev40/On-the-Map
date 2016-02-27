@@ -115,8 +115,8 @@
 			children = (
 				7A8E96D21C6C1A9B0072B8AC /* LoginViewController.swift */,
 				7A8E96E91C6D6B5E0072B8AC /* TabBarViewController.swift */,
-				7A8E96E41C6D68930072B8AC /* LocationsInTableViewController.swift */,
 				7A8E96E21C6D68770072B8AC /* LocationsOnMapViewController.swift */,
+				7A8E96E41C6D68930072B8AC /* LocationsInTableViewController.swift */,
 				7AC7C6281C7A18F900F46C3A /* MakePostViewController.swift */,
 			);
 			name = Controllers;
