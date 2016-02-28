@@ -10,7 +10,16 @@ import UIKit
 
 class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
     
+    //MARK: OUTLETS
+    //MARK: CONSTANTS
+    //MARK: PROPERTIES
+    //MARK: CUSTOM METHODS
+    //MARK: DELEGATE/DATASOURCE METHODS
+    //MARK: VIEW CONTROLLER METHODS
+    //MARK: VIEW CONTROLLER LIFECYCLE
+    
     var spinner: UIActivityIndicatorView?
+    
     var logoutButton: UIBarButtonItem!
     var refreshButton: UIBarButtonItem!
     var postButton: UIBarButtonItem!

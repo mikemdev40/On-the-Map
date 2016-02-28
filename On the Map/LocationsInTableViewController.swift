@@ -11,6 +11,14 @@ import SafariServices
 
 class LocationsInTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    //MARK: OUTLETS
+    //MARK: CONSTANTS
+    //MARK: PROPERTIES
+    //MARK: CUSTOM METHODS
+    //MARK: DELEGATE/DATASOURCE METHODS
+    //MARK: VIEW CONTROLLER METHODS
+    //MARK: VIEW CONTROLLER LIFECYCLE
+    
     struct Constants {
         static let openPostViewSegue = "SegueFromTableToPost"
     }

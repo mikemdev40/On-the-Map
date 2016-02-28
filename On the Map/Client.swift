@@ -13,14 +13,6 @@ import FBSDKLoginKit
 //this class was created with all static variables and class methods, since there will and should only be only client instance at any given time
 class Client {
     
-    //MARK: OUTLETS
-    //MARK: CONSTANTS
-    //MARK: PROPERTIES
-    //MARK: CUSTOM METHODS
-    //MARK: DELEGATE/DATASOURCE METHODS
-    //MARK: VIEW CONTROLLER METHODS
-    //MARK: VIEW CONTROLLER LIFECYCLE
-    
     //MARK: CONSTANTS
     struct Constants {
         static let udacitySessionURL = "https://www.udacity.com/api/session"

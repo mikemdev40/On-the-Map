@@ -12,6 +12,14 @@ import CoreLocation
 
 class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate {
 
+    //MARK: OUTLETS
+    //MARK: CONSTANTS
+    //MARK: PROPERTIES
+    //MARK: CUSTOM METHODS
+    //MARK: DELEGATE/DATASOURCE METHODS
+    //MARK: VIEW CONTROLLER METHODS
+    //MARK: VIEW CONTROLLER LIFECYCLE
+    
     struct Constants {
         static let latitudeDelta: CLLocationDegrees = 0.05
         static let longitudeDelta: CLLocationDegrees = 0.05

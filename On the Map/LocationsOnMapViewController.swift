@@ -12,6 +12,14 @@ import SafariServices
 
 class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
 
+    //MARK: OUTLETS
+    //MARK: CONSTANTS
+    //MARK: PROPERTIES
+    //MARK: CUSTOM METHODS
+    //MARK: DELEGATE/DATASOURCE METHODS
+    //MARK: VIEW CONTROLLER METHODS
+    //MARK: VIEW CONTROLLER LIFECYCLE
+    
     struct Constants {
         static let openPostViewSegue = "SegueFromMapToPost"
         static let latitudeDelta: CLLocationDegrees = 0.2
