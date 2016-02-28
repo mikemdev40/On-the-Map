@@ -38,9 +38,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     var facebookLoginResults: (Bool, String?)?
+    
     var loginViewActive = false {
         didSet { determineIfSegueCanHappen() }
     }
+    
     var facebookLoadedComplete = false {
         didSet { determineIfSegueCanHappen() }
     }
