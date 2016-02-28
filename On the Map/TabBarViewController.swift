@@ -65,17 +65,18 @@ class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
 
         delegate = self
         
-        title = "On The Map"
+        title = "Posts"
         flexibleSpace = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
 
         logoutButton = UIBarButtonItem(title: "Logout", style: .Plain, target: self, action: "logout")
+        refreshButton = UIBarButtonItem(barButtonSystemItem: .Refresh, target: viewControllers?[0], action: "refresh")
+
         editButton = editButtonItem()
         editButton.enabled = false
-        navigationItem.leftBarButtonItems = [logoutButton, flexibleSpace, editButton, flexibleSpace]
-        
-        refreshButton = UIBarButtonItem(barButtonSystemItem: .Refresh, target: viewControllers?[0], action: "refresh")
         postButton = UIBarButtonItem(image: UIImage(named: "pin"), style: .Plain, target: viewControllers?[0], action: "post")
-        navigationItem.rightBarButtonItems = [refreshButton, flexibleSpace, postButton, flexibleSpace]
+        
+        navigationItem.leftBarButtonItems = [logoutButton, flexibleSpace, refreshButton, flexibleSpace]
+        navigationItem.rightBarButtonItems = [editButton, flexibleSpace, postButton, flexibleSpace]
         
         viewControllers?[0].tabBarItem.image = UIImage(named: "map")
         viewControllers?[0].title = "Map"
