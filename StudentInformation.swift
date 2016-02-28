@@ -8,6 +8,7 @@
 
 import Foundation
 
+//this struct was designed to contain all the information that is retrieved from the parse server, for each specific post; the properties below match those from the data table that is returned by parse
 struct StudentInformation {
     
     var objectID: String
@@ -21,6 +22,7 @@ struct StudentInformation {
     var createdAt: String
     var updatedAt: String
     
+    //this initializer takes a dictionary and uses its keys and values to initialize each struct instance
     init (dictionary: [String: AnyObject]) {
         self.objectID = dictionary["objectId"] as! String
         self.uniqueKey = dictionary["uniqueKey"] as! String
