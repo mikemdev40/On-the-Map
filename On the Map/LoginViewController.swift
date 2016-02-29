@@ -178,6 +178,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     //MARK: DELEGATE/DATASOURCE METHODS
+    //this delegate method causes the keyboard to dismiss when the user taps "return" on the text field
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
