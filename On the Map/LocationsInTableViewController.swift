@@ -27,6 +27,9 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
     //MARK: PROPERTIES
     //this property establishes the "pull down to refresh" feature of the table view; although this is a feature that is a pre-defined property of a UITableViewController, it is possible to manually add it (as done here) for view controllers that are not subclasses of UITableViewController; however, the set up (as accomplished in the viewDidLoad) needed a bit of research to get it work correctly (because, as promised in the documentation, it was at first exhibiting unexpected behavior!)
     let refresher = UIRefreshControl()
+    
+    //this property is set to true once the "edit mode note" display alert is shown when the edit button is tapped, which prevents the alert from being shown again
+    var didShowEditMessage = false
 
     //MARK: CUSTOM METHODS
     ///method that is associated with the post button in the navigation bar; the tab bar class itself is responsible for setting the target of the post button to be this view controller, at which point, this post method is the action that runs when the post button is pressed
@@ -140,9 +143,15 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
     }
     
     //MARK: VIEW CONTROLLER METHODS
-    //this method gets invoked by the tab view controller's edit button, as detailed in the TabBarViewController class, so as to link the tab bar's editing mode that the edit button is actually toggling to this view controller's editing mode and then finally to the table view's editing mode (NOTE: if this view controller was instead a UITableViewController and the edit button was attached to the UITableViewController's navigation bar rather than a tab bar controller's navigvation bar, then the edit button would automatically toggle the table without these two intermediate steps; however, the overridden method below is needed because we are dealing with a table view as a SUBVIEW of a generic UIViewController's root view - and not the table view of a UITableViewController [which is that controller's root view], and the overridden setEditing method in the tab bar controller is needed because the navigation bar itself is associated with the tab bar, and so the editing button is actually toggling the tab bar's setEditing mode; needless to say, getting this to work correctly was tricky and frustrating!)
+    //this method gets invoked by the tab view controller's edit button, as detailed in the TabBarViewController class, so as to link the tab bar's editing mode that the edit button is actually toggling to this view controller's editing mode and then finally to the table view's editing mode (NOTE: if this view controller was instead a UITableViewController and the edit button was attached to the UITableViewController's navigation bar rather than a tab bar controller's navigvation bar, then the edit button would automatically toggle the table without these two intermediate steps; however, the overridden method below is needed because we are dealing with a table view as a SUBVIEW of a generic UIViewController's root view - and not the table view of a UITableViewController [which is that controller's root view], and the overridden setEditing method in the tab bar controller is needed because the navigation bar itself is associated with the tab bar, and so the editing button is actually toggling the tab bar's setEditing mode; needless to say, getting this to work correctly was tricky and frustrating!); the first time the "Edit" button is tapped, an alert is displayed which explains that ONLY the posts made by the user will appear with the delete icon next to them (this alert is prevented from being shown again by setting the didShowEditMessage to true)
     override func setEditing(editing: Bool, animated: Bool) {
         tableView.setEditing(editing, animated: true)
+        
+        if didShowEditMessage == false {
+            displayLoginErrorAlert("Edit Mode Note", message: "In edit mode, ONLY posts that YOU have made will appear with the delete icon and are able to be deleted.", handler: { (action) in
+                    self.didShowEditMessage = true
+                })
+        }
     }
     
     //MARK: VIEW CONTROLLER LIFECYCLE
