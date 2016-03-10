@@ -11,15 +11,6 @@ import MapKit
 import SafariServices
 
 class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
-
-    //MARK: CONSTANTS
-    struct Constants {
-        static let openPostViewSegue = "SegueFromMapToPost"
-        
-        //these two constants define how far to zoom in around an annotation, and are used for zomming in automatically to the location of a newly added post by the user
-        static let latitudeDelta: CLLocationDegrees = 0.2
-        static let longitudeDelta: CLLocationDegrees = 0.2
-    }
     
     //MARK: OUTLETS
     @IBOutlet weak var mapView: MKMapView! {
@@ -33,7 +24,7 @@ class LocationsOnMapViewController: UIViewController, MKMapViewDelegate {
     //MARK: CUSTOM METHODS
     ///method that is associated with the post button in the navigation bar; the tab bar class itself is responsible for setting the target of the post button to be this view controller, at which point, this post method is the action that runs when the post button is pressed
     func post() {
-        performSegueWithIdentifier(Constants.openPostViewSegue, sender: self)
+        performSegueWithIdentifier(Constants.openPostViewSegueFromMap, sender: self)
     }
     
     ///method that is associated with the refresh button in the navigation bar (and as with the post button, the tab bar class itself is responsible for setting the target of the refresh button to be this view controller, at which point, this refresh method is the action that runs when the refresh button is pressed); when this method is invoked, the network indicator starts spinning to show network activity, all posts are cleared out to be re-downloaded (if this method is running for the very first time, there is nothing to clear out), and a call is made to the Client.retrieveStudentInformation method, which is responsible for downloading all the post data from parse; if there are results (and no error) to display, then a call is made to the StudentPosts.generatePostsFromData, which builds the array from all the post data that the map uses as the datasource for its annotations, and then calls the createAndAddAnnotations method, which actually creates an annotations array that will ultimately get added to the mapview to show as pins; after these actions take place, the first element of the Client.didPostItem tuple (the element designated for the map view controller) is set back to false (it occurs here and not within the viewWillAppear, as is the case for the table view controller, because the createAndAddAnnotations also checks the value of Client.didPostItem.0 to see if its true, and if so, the map automatically zooms into the new annotation; if there is no new user post, i.e. Client.didPostItem.0 already is false, then no zoom occurs

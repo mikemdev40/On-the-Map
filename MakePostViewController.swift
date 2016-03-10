@@ -12,13 +12,6 @@ import CoreLocation
 
 //the many IBOutlets and IBActions of this class result from the design of this view controller in the interface builder; getting the setup of these views correct (particularly with regards to the stackviews, animations, and keyboard responses) was tricky (and frustrating!) but worth it in the end (at least i think!)
 class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate {
-
-    //MARK: CONSTANTS
-    struct Constants {
-        //these two constants define how far to zoom in around an annotation, and are used for zomming in automatically to the location (whether typed in by user or using the current location)
-        static let latitudeDelta: CLLocationDegrees = 0.05
-        static let longitudeDelta: CLLocationDegrees = 0.05
-    }
     
     //this enumeration is used for convenience when swapping the location view and the URL entry view (as discussed in more detail in the swapViews method below
     enum ViewToDisplay {
@@ -202,7 +195,7 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
             //clears out any present pins on the map, in the event there is already one on the map, such as if the user tapped "reset" and then re-entered a new location
             mapView.removeAnnotations(mapView.annotations)
             
-            let region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: Constants.latitudeDelta, longitudeDelta: Constants.longitudeDelta))
+            let region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: Constants.latitudeDeltaMakePost, longitudeDelta: Constants.longitudeDeltaMakePost))
             mapView.setRegion(region, animated: true)
             
             //adds the annotation to the map, which will lead to the viewForAnnotation delegate method being called, which will return a green pin to be displayed

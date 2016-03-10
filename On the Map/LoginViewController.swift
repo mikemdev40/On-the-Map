@@ -14,17 +14,6 @@ import FBSDKLoginKit
 //this class is used for the login screen, as constructed in the interface builder
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
-    //MARK: CONSTANTS
-    struct Constants {
-        static let LoginSegueIdentifer = "LoginSuccessfulSegue"
-        static let udacitySignUpURL = "https://www.udacity.com/account/auth#!/signup"
-        static let loginErrorMissingInfoTitle = "Missing Info"
-        static let loginErrorMissingInfoMessgae = "Username or password missing."
-        static let loginWasCancelledTitle = "Login Not Successful"
-        static let loginWasCancelledMessage = "Facebook login cancelled."
-        static let generalLoginErrorTitle = "Login Error"
-    }
-    
     //MARK: OUTLETS
     @IBOutlet weak var usernameTextField: UITextField! {
         didSet { usernameTextField.delegate = self }

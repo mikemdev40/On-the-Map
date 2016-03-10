@@ -10,11 +10,6 @@ import UIKit
 import SafariServices
 
 class LocationsInTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
-    //MARK: CONSTANTS
-    struct Constants {
-        static let openPostViewSegue = "SegueFromTableToPost"
-    }
     
     //MARK: OUTLETS
     @IBOutlet weak var tableView: UITableView! {
@@ -34,7 +29,7 @@ class LocationsInTableViewController: UIViewController, UITableViewDelegate, UIT
     //MARK: CUSTOM METHODS
     ///method that is associated with the post button in the navigation bar; the tab bar class itself is responsible for setting the target of the post button to be this view controller, at which point, this post method is the action that runs when the post button is pressed
     func post() {
-        performSegueWithIdentifier(Constants.openPostViewSegue, sender: self)
+        performSegueWithIdentifier(Constants.openPostViewSegueFromTable, sender: self)
     }
 
     ///method that is associated with the refresh button in the navigation bar (and as with the post button, the tab bar class itself is responsible for setting the target of the refresh button to be this view controller, at which point, this refresh method is the action that runs when the refresh button is pressed), and ALSO attached as the action associated with the UIRefreshControl; when this method is invoked (regardless of if it was the refresh button that was tapped or the table pulldown refresh method), the refresher starts refreshing (which is visible only if the table was pulled down to start the refreshing), the network indicator starts spinning to show network activity, all posts are cleared out to be re-downloaded (if this method is running for the very first time, there is nothing to clear out), and a call is made to the Client.retrieveStudentInformation method, which is responsible for downloading all the post data from parse; if there are results (and no error) to display, then a call is made to the StudentPosts.generatePostsFromData, which builds the array from all the post data that the table uses as the datasource for its cells, and then refreshes the table

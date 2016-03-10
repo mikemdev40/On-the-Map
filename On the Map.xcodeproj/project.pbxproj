@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A0091741C91224300757C49 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0091731C91224300757C49 /* Constants.swift */; };
 		7A4E54CE1C78B1C00079044E /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABB8C561C74074B0063E500 /* FBSDKCoreKit.framework */; };
 		7A4E54CF1C78B1C00079044E /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABB8C571C74074B0063E500 /* FBSDKLoginKit.framework */; };
 		7A8E96D11C6C1A9B0072B8AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8E96D01C6C1A9B0072B8AC /* AppDelegate.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7A0091731C91224300757C49 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7A8E96CD1C6C1A9B0072B8AC /* On the Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On the Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A8E96D01C6C1A9B0072B8AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A8E96D21C6C1A9B0072B8AC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				7A8E96E81C6D68B60072B8AC /* Controllers */,
 				7A8E96F31C7205D90072B8AC /* Frameworks */,
 				7A8E96D01C6C1A9B0072B8AC /* AppDelegate.swift */,
+				7A0091731C91224300757C49 /* Constants.swift */,
 				7A8E96D91C6C1A9B0072B8AC /* LaunchScreen.storyboard */,
 				7A8E96D71C6C1A9B0072B8AC /* Assets.xcassets */,
 				7A8E96DC1C6C1A9B0072B8AC /* Info.plist */,
@@ -222,6 +225,7 @@
 				7ABB8C7D1C7828C90063E500 /* PostTableViewCell.swift in Sources */,
 				7A8E96EA1C6D6B5E0072B8AC /* TabBarViewController.swift in Sources */,
 				7A8E96D11C6C1A9B0072B8AC /* AppDelegate.swift in Sources */,
+				7A0091741C91224300757C49 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

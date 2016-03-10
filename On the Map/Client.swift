@@ -13,16 +13,6 @@ import FBSDKLoginKit
 //this class was created with all static variables and class methods, since there will and should only be only client instance at any given time
 class Client {
     
-    //MARK: CONSTANTS
-    struct Constants {
-        static let udacitySessionURL = "https://www.udacity.com/api/session"
-        //the backslashes as the end of the two strings below were added here for two of the URLs, as two of the methods that use them affix another piece on to the end and without the backslashes, the request would not process correctly; they alternatively could have been added elsewhere
-        static let udacityUserInfoURL = "https://www.udacity.com/api/users/"
-        static let parseStudentLocationsURL = "https://api.parse.com/1/classes/StudentLocation/"
-        static let parseApplicationID = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
-        static let RESTAPIKey = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
-    }
-    
     //MARK: PROPERTIES
     static var udacityUserID: String?
     static var udacitySessionID: String?
