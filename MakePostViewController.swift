@@ -90,6 +90,9 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
     ///method connected to the "Use Current Location" button, and it is only at this time that the user is asked for permission for the app to use location services (the "when in use" option was elected for this app, and entered as required in the info.plist); once tapped, the location manager gets (lazily) initialized and checks the app's authorization status, responding approriately based on whether the user has already granted permission (or not); assuming
     @IBAction func useCurrentLocation(sender: UIButton) {
         
+        //removes the cursor from the location text field, which in turn dismisses the keyboard so that the blur effect and activity spinner are visible (even if only briefly), followed by the underlying toolbar (with "Use Location" and "Reset" buttons)
+        self.locationTextField.resignFirstResponder()
+        
         switch CLLocationManager.authorizationStatus() {
             
         case .NotDetermined:
@@ -337,6 +340,7 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
             
             //note that it wasn't necessary to dispatch to main queue inside this completion handler closure, even though updates are being made to the UI, since the completion handler for the geocoder completes on the main thread, as per the documentation
             self.displayBlurEffect(false)
+
             if let error = error {
                 self.displayErrorAlert("Error getting location", message: error.localizedDescription, handler: nil)
             } else if let placemarks = placemarkArray {
@@ -347,6 +351,7 @@ class MakePostViewController: UIViewController, MKMapViewDelegate, UITextFieldDe
                 
                 //unhides the toolbar, which then presents the user with two options: "Use Location" or "Reset"
                 self.hideSaveCancelToolbar(false)
+                
             }
         }
     }
